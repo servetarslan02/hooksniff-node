@@ -1,6 +1,14 @@
 import { Authentication } from "./api/authentication";
+import { BackgroundTask } from "./api/backgroundTask";
 import { Endpoint } from "./api/endpoint";
+import { Environment } from "./api/environment";
 import { EventType } from "./api/eventType";
+import { OperationalWebhook } from "./api/operationalWebhook";
+import { MessagePoller } from "./api/messagePoller";
+import { Inbound } from "./api/inbound";
+import { ConnectorApi } from "./api/connector";
+import { IntegrationApi } from "./api/integration";
+import { StreamApi } from "./api/stream";
 import { Health } from "./api/health";
 import { Message } from "./api/message";
 import { MessageAttempt } from "./api/messageAttempt";
@@ -35,6 +43,7 @@ export type { EndpointListOptions } from "./api/endpoint";
 export type { EventTypeListOptions } from "./api/eventType";
 export { type MessageListOptions, messageInRaw } from "./api/message";
 export type { MessageAttemptListByEndpointOptions, MessageAttemptListByMsgOptions } from "./api/messageAttempt";
+export type { PollOptions, SeekOptions, CommitOptions } from "./api/messagePoller";
 
 export type HookSniffOptions = {
   debug?: boolean;
@@ -79,12 +88,44 @@ export class HookSniff {
     return new Authentication(this.requestCtx);
   }
 
+  public get backgroundTask() {
+    return new BackgroundTask(this.requestCtx);
+  }
+
   public get endpoint() {
     return new Endpoint(this.requestCtx);
   }
 
+  public get environment() {
+    return new Environment(this.requestCtx);
+  }
+
   public get eventType() {
     return new EventType(this.requestCtx);
+  }
+
+  public get operationalWebhook() {
+    return new OperationalWebhook(this.requestCtx);
+  }
+
+  public get messagePoller() {
+    return new MessagePoller(this.requestCtx);
+  }
+
+  public get inbound() {
+    return new Inbound(this.requestCtx);
+  }
+
+  public get connector() {
+    return new ConnectorApi(this.requestCtx);
+  }
+
+  public get integration() {
+    return new IntegrationApi(this.requestCtx);
+  }
+
+  public get stream() {
+    return new StreamApi(this.requestCtx);
   }
 
   public get health() {
@@ -108,7 +149,7 @@ export class HookSniff {
    *
    * @example
    * ```ts
-   * const sub = hs.stream({
+   * const sub = hs.subscribe({
    *   eventTypes: ["order.created"],
    *   onEvent: (event) => console.log(event),
    * });
@@ -116,7 +157,7 @@ export class HookSniff {
    * // Later: sub.close();
    * ```
    */
-  public stream(options: StreamOptions): StreamSubscription {
+  public subscribe(options: StreamOptions): StreamSubscription {
     return subscribeToStream(this.requestCtx, options);
   }
 }

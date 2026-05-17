@@ -1,4 +1,19 @@
 export { type EndpointCreatedEventData } from "./endpointCreatedEventData";
+export { type BackgroundTaskOut } from "./backgroundTaskOut";
+export { type OperationalWebhookEndpointIn } from "./operationalWebhookEndpointIn";
+export { type OperationalWebhookEndpointOut } from "./operationalWebhookEndpointOut";
+export { type OperationalWebhookDeliveryOut } from "./operationalWebhookDeliveryOut";
+export { type PolledMessage } from "./polledMessage";
+export { type MessagePollerCursor } from "./messagePollerCursor";
+export { type MessagePollerPollResponse } from "./messagePollerPollResponse";
+export { type MessagePollerCursorResponse } from "./messagePollerCursorResponse";
+export { type MessagePollerCommitResponse } from "./messagePollerCommitResponse";
+export { type EnvironmentIn } from "./environmentIn";
+export { type EnvironmentOut } from "./environmentOut";
+export { type EnvironmentPatch } from "./environmentPatch";
+export { type EnvironmentVariableIn } from "./environmentVariableIn";
+export { type EnvironmentVariableOut } from "./environmentVariableOut";
+export { type EnvironmentVariableBulkUpsertIn } from "./environmentVariableBulkUpsertIn";
 export { type EndpointDeletedEventData } from "./endpointDeletedEventData";
 export { type EndpointDisabledEventData } from "./endpointDisabledEventData";
 export { EndpointDisabledTrigger } from "./endpointDisabledTrigger";
@@ -34,7 +49,6 @@ export { type MessageAttemptFailingEventData } from "./messageAttemptFailingEven
 export { type MessageAttemptLog } from "./messageAttemptLog";
 export { type MessageAttemptLogEvent } from "./messageAttemptLogEvent";
 export { type MessageAttemptOut } from "./messageAttemptOut";
-export { type MessageAttemptRecoveredEventData } from "./messageAttemptRecoveredEventData";
 export { MessageAttemptTriggerType } from "./messageAttemptTriggerType";
 export { type MessageIn } from "./messageIn";
 export { type MessageOut } from "./messageOut";
