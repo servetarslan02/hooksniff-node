@@ -83,14 +83,14 @@ describe("Webhook", () => {
     });
   });
 
-  it("should accept svix-branded headers (backward compat)", () => {
+  it("should accept hooksniff-branded headers", () => {
     const wh = new Webhook(secret);
     const signature = wh.sign(msgId, timestamp, payload);
 
     const headers = {
-      "svix-id": msgId,
-      "svix-timestamp": String(timestampSeconds),
-      "svix-signature": signature,
+      "hooksniff-id": msgId,
+      "hooksniff-timestamp": String(timestampSeconds),
+      "hooksniff-signature": signature,
     };
 
     const result = wh.verify(payload, headers);

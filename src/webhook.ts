@@ -24,11 +24,11 @@ function resolveHeaders(headers_: Record<string, string>): Record<string, string
     headers[key.toLowerCase()] = headers_[key];
   }
 
-  headers["webhook-id"] = headers["hooksniff-id"] ?? headers["svix-id"] ?? headers["webhook-id"] ?? "";
+  headers["webhook-id"] = headers["hooksniff-id"] ?? headers["webhook-id"] ?? "";
   headers["webhook-signature"] =
-    headers["hooksniff-signature"] ?? headers["svix-signature"] ?? headers["webhook-signature"] ?? "";
+    headers["hooksniff-signature"] ?? headers["webhook-signature"] ?? "";
   headers["webhook-timestamp"] =
-    headers["hooksniff-timestamp"] ?? headers["svix-timestamp"] ?? headers["webhook-timestamp"] ?? "";
+    headers["hooksniff-timestamp"] ?? headers["webhook-timestamp"] ?? "";
 
   return headers;
 }
