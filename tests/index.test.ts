@@ -34,7 +34,8 @@ describe("HookSniff", () => {
 describe("Webhook", () => {
   const secret = "whsec_dGVzdA=="; // base64("test")
   const msgId = "msg_test123";
-  const timestamp = Math.floor(Date.now() / 1000);
+  const timestampSeconds = Math.floor(Date.now() / 1000);
+  const timestamp = new Date(timestampSeconds * 1000);
   const payload = '{"event":"test"}';
 
   it("should verify a valid webhook signature", () => {
@@ -43,8 +44,8 @@ describe("Webhook", () => {
 
     const headers = {
       "webhook-id": msgId,
-      "webhook-timestamp": String(timestamp),
-      "webhook-signature": `v1,${signature}`,
+      "webhook-timestamp": String(timestampSeconds),
+      "webhook-signature": signature,
     };
 
     const result = wh.verify(payload, headers);
@@ -56,7 +57,7 @@ describe("Webhook", () => {
 
     const headers = {
       "webhook-id": msgId,
-      "webhook-timestamp": String(timestamp),
+      "webhook-timestamp": String(timestampSeconds),
       "webhook-signature": "v1,invalid_signature",
     };
 
@@ -67,13 +68,14 @@ describe("Webhook", () => {
 
   it("should reject old timestamp", () => {
     const wh = new Webhook(secret);
-    const oldTimestamp = Math.floor(Date.now() / 1000) - 600; // 10 minutes ago
+    const oldTimestampSeconds = Math.floor(Date.now() / 1000) - 600; // 10 minutes ago
+    const oldTimestamp = new Date(oldTimestampSeconds * 1000);
     const signature = wh.sign(msgId, oldTimestamp, payload);
 
     const headers = {
       "webhook-id": msgId,
-      "webhook-timestamp": String(oldTimestamp),
-      "webhook-signature": `v1,${signature}`,
+      "webhook-timestamp": String(oldTimestampSeconds),
+      "webhook-signature": signature,
     };
 
     assert.throws(() => wh.verify(payload, headers), {
@@ -87,8 +89,8 @@ describe("Webhook", () => {
 
     const headers = {
       "svix-id": msgId,
-      "svix-timestamp": String(timestamp),
-      "svix-signature": `v1,${signature}`,
+      "svix-timestamp": String(timestampSeconds),
+      "svix-signature": signature,
     };
 
     const result = wh.verify(payload, headers);
@@ -146,7 +148,8 @@ describe("SDK Version", () => {
 describe("Typed Webhook Events", () => {
   const secret = "whsec_dGVzdA==";
   const msgId = "msg_test123";
-  const timestamp = Math.floor(Date.now() / 1000);
+  const timestampSeconds = Math.floor(Date.now() / 1000);
+  const timestamp = new Date(timestampSeconds * 1000);
 
   it("should return typed endpoint.created event", () => {
     const wh = new Webhook(secret);
@@ -158,8 +161,8 @@ describe("Typed Webhook Events", () => {
     const signature = wh.sign(msgId, timestamp, payload);
     const headers = {
       "webhook-id": msgId,
-      "webhook-timestamp": String(timestamp),
-      "webhook-signature": `v1,${signature}`,
+      "webhook-timestamp": String(timestampSeconds),
+      "webhook-signature": signature,
     };
 
     const result = wh.verify(payload, headers);
@@ -179,8 +182,8 @@ describe("Typed Webhook Events", () => {
     const signature = wh.sign(msgId, timestamp, payload);
     const headers = {
       "webhook-id": msgId,
-      "webhook-timestamp": String(timestamp),
-      "webhook-signature": `v1,${signature}`,
+      "webhook-timestamp": String(timestampSeconds),
+      "webhook-signature": signature,
     };
 
     const result = wh.verify(payload, headers);
@@ -203,8 +206,8 @@ describe("Typed Webhook Events", () => {
     const signature = wh.sign(msgId, timestamp, payload);
     const headers = {
       "webhook-id": msgId,
-      "webhook-timestamp": String(timestamp),
-      "webhook-signature": `v1,${signature}`,
+      "webhook-timestamp": String(timestampSeconds),
+      "webhook-signature": signature,
     };
 
     const result = wh.verify(payload, headers);
@@ -235,8 +238,8 @@ describe("Typed Webhook Events", () => {
       const signature = wh.sign(msgId, timestamp, payload);
       const headers = {
         "webhook-id": msgId,
-        "webhook-timestamp": String(timestamp),
-        "webhook-signature": `v1,${signature}`,
+        "webhook-timestamp": String(timestampSeconds),
+        "webhook-signature": signature,
       };
 
       const result = wh.verify(payload, headers);
@@ -250,8 +253,8 @@ describe("Typed Webhook Events", () => {
     const signature = wh.sign(msgId, timestamp, payload);
     const headers = {
       "webhook-id": msgId,
-      "webhook-timestamp": String(timestamp),
-      "webhook-signature": `v1,${signature}`,
+      "webhook-timestamp": String(timestampSeconds),
+      "webhook-signature": signature,
     };
     const result = wh.verify(payload, headers);
     assert.equal(result.event, "endpoint.created");
@@ -264,8 +267,8 @@ describe("Typed Webhook Events", () => {
     const signature = wh.sign(msgId, timestamp, payload);
     const headers = {
       "webhook-id": msgId,
-      "webhook-timestamp": String(timestamp),
-      "webhook-signature": `v1,${signature}`,
+      "webhook-timestamp": String(timestampSeconds),
+      "webhook-signature": signature,
     };
     const result = wh.verify(payload, headers);
     assert.equal(result.event, "custom.unknown");
@@ -282,8 +285,8 @@ describe("Typed Webhook Events", () => {
     const signature = wh.sign(msgId, timestamp, payload);
     const headers = {
       "webhook-id": msgId,
-      "webhook-timestamp": String(timestamp),
-      "webhook-signature": `v1,${signature}`,
+      "webhook-timestamp": String(timestampSeconds),
+      "webhook-signature": signature,
     };
     const result = wh.verify(payload, headers);
     assert.equal(result.data.nested.key, "val");
@@ -299,8 +302,8 @@ describe("Typed Webhook Events", () => {
     const signature = wh.sign(msgId, timestamp, payload);
     const headers = {
       "webhook-id": msgId,
-      "webhook-timestamp": String(timestamp),
-      "webhook-signature": `v1,${signature}`,
+      "webhook-timestamp": String(timestampSeconds),
+      "webhook-signature": signature,
     };
     const result = wh.verify(payload, headers);
     assert.equal(result.data.appId, "ünïcödé");
@@ -317,8 +320,8 @@ describe("Typed Webhook Events", () => {
     const signature = wh.sign(msgId, timestamp, payload);
     const headers = {
       "webhook-id": msgId,
-      "webhook-timestamp": String(timestamp),
-      "webhook-signature": `v1,${signature}`,
+      "webhook-timestamp": String(timestampSeconds),
+      "webhook-signature": signature,
     };
     const result = wh.verify(payload, headers);
     assert.equal(result.data.appId.length, 10000);
@@ -334,8 +337,8 @@ describe("Typed Webhook Events", () => {
     const signature = wh.sign(msgId, timestamp, payload);
     const headers = {
       "webhook-id": msgId,
-      "webhook-timestamp": String(timestamp),
-      "webhook-signature": `v1,${signature}`,
+      "webhook-timestamp": String(timestampSeconds),
+      "webhook-signature": signature,
     };
     const result = wh.verify(payload, headers);
     assert.equal(result.data.appId, "a@b.c");
@@ -345,7 +348,8 @@ describe("Typed Webhook Events", () => {
 describe("Webhook Edge Cases", () => {
   const secret = "whsec_dGVzdA==";
   const msgId = "msg_test123";
-  const timestamp = Math.floor(Date.now() / 1000);
+  const timestampSeconds = Math.floor(Date.now() / 1000);
+  const timestamp = new Date(timestampSeconds * 1000);
 
   it("should accept unbranded headers", () => {
     const wh = new Webhook(secret);
@@ -353,8 +357,8 @@ describe("Webhook Edge Cases", () => {
     const signature = wh.sign(msgId, timestamp, payload);
     const headers = {
       "webhook-id": msgId,
-      "webhook-timestamp": String(timestamp),
-      "webhook-signature": `v1,${signature}`,
+      "webhook-timestamp": String(timestampSeconds),
+      "webhook-signature": signature,
     };
     const result = wh.verify(payload, headers);
     assert.equal(result.event, "test");
@@ -363,7 +367,7 @@ describe("Webhook Edge Cases", () => {
   it("should reject missing id header", () => {
     const wh = new Webhook(secret);
     assert.throws(() => wh.verify("{}", {
-      "webhook-timestamp": String(timestamp),
+      "webhook-timestamp": String(timestampSeconds),
       "webhook-signature": "v1,sig",
     }));
   });
@@ -380,7 +384,7 @@ describe("Webhook Edge Cases", () => {
     const wh = new Webhook(secret);
     assert.throws(() => wh.verify("{}", {
       "webhook-id": msgId,
-      "webhook-timestamp": String(timestamp),
+      "webhook-timestamp": String(timestampSeconds),
     }));
   });
 
@@ -390,8 +394,8 @@ describe("Webhook Edge Cases", () => {
     const signature = wh.sign(msgId, timestamp, payload);
     const headers = {
       "webhook-id": msgId,
-      "webhook-timestamp": String(timestamp),
-      "webhook-signature": `v1,${signature}`,
+      "webhook-timestamp": String(timestampSeconds),
+      "webhook-signature": signature,
     };
     const result = wh.verify(payload, headers);
     assert.equal(result.event, "");
@@ -403,8 +407,8 @@ describe("Webhook Edge Cases", () => {
     const signature = wh.sign(msgId, timestamp, payload);
     const headers = {
       "webhook-id": msgId,
-      "webhook-timestamp": String(timestamp),
-      "webhook-signature": `v1,${signature}`,
+      "webhook-timestamp": String(timestampSeconds),
+      "webhook-signature": signature,
     };
     const result = wh.verifyRaw(payload, headers);
     assert.equal(result.event, "test");
@@ -412,22 +416,22 @@ describe("Webhook Edge Cases", () => {
 
   it("should sign deterministic", () => {
     const wh = new Webhook(secret);
-    const sig1 = wh.sign(msgId, 1700000000, "payload");
-    const sig2 = wh.sign(msgId, 1700000000, "payload");
+    const sig1 = wh.sign(msgId, new Date(1700000000000), "payload");
+    const sig2 = wh.sign(msgId, new Date(1700000000000), "payload");
     assert.equal(sig1, sig2);
   });
 
   it("should sign different payloads differently", () => {
     const wh = new Webhook(secret);
-    const sig1 = wh.sign(msgId, 1700000000, "p1");
-    const sig2 = wh.sign(msgId, 1700000000, "p2");
+    const sig1 = wh.sign(msgId, new Date(1700000000000), "p1");
+    const sig2 = wh.sign(msgId, new Date(1700000000000), "p2");
     assert.notEqual(sig1, sig2);
   });
 
   it("should sign with v1 prefix", () => {
     const wh = new Webhook(secret);
-    const sig = wh.sign(msgId, 1700000000, "p");
-    assert.ok(sig.startsWith(","));
+    const sig = wh.sign(msgId, new Date(1700000000000), "p");
+    assert.ok(sig.startsWith("v1,"));
   });
 });
 

@@ -45,7 +45,11 @@
     "standardwebhooks": "1.0.0"
   },
   "devDependencies": {
+    "@jest/globals": "^30.4.1",
     "@types/node": "^20.0.0",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.9",
+    "tsx": "^4.22.2",
     "typescript": "^5.0.0"
   },
   "engines": {
