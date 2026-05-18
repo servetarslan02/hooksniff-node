@@ -217,7 +217,7 @@ async function sendWithRetry(
   init: HookSniffRequestInit,
   retryScheduleInMs?: number[],
   nextInterval = 50,
-  triesLeft = 2,
+  triesLeft = 3,
   fetchImpl: typeof fetch = fetch,
   debug = false,
   retryCount = 1
