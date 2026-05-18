@@ -130,6 +130,19 @@ describe("Errors", () => {
   });
 });
 
+describe("SDK Version", () => {
+  it("should have LIB_VERSION defined", async () => {
+    const { LIB_VERSION } = await import("../src/request.js");
+    assert.ok(LIB_VERSION);
+    assert.ok(typeof LIB_VERSION === "string");
+  });
+
+  it("should use semver-like format", async () => {
+    const { LIB_VERSION } = await import("../src/request.js");
+    assert.ok(LIB_VERSION.includes("."), "Version should contain dots");
+  });
+});
+
 describe("Typed Webhook Events", () => {
   const secret = "whsec_dGVzdA==";
   const msgId = "msg_test123";
@@ -229,5 +242,93 @@ describe("Typed Webhook Events", () => {
       const result = wh.verify(payload, headers);
       assert.equal(result.event, eventType, `Failed for ${eventType}`);
     }
+  });
+
+  it("should handle empty data gracefully", () => {
+    const wh = new Webhook(secret);
+    const payload = JSON.stringify({ event: "endpoint.created", data: {}, timestamp: "" });
+    const signature = wh.sign(msgId, timestamp, payload);
+    const headers = {
+      "webhook-id": msgId,
+      "webhook-timestamp": String(timestamp),
+      "webhook-signature": `v1,${signature}`,
+    };
+    const result = wh.verify(payload, headers);
+    assert.equal(result.event, "endpoint.created");
+    assert.deepEqual(result.data, {});
+  });
+
+  it("should handle unknown event types", () => {
+    const wh = new Webhook(secret);
+    const payload = JSON.stringify({ event: "custom.unknown", data: { x: 1 }, timestamp: "" });
+    const signature = wh.sign(msgId, timestamp, payload);
+    const headers = {
+      "webhook-id": msgId,
+      "webhook-timestamp": String(timestamp),
+      "webhook-signature": `v1,${signature}`,
+    };
+    const result = wh.verify(payload, headers);
+    assert.equal(result.event, "custom.unknown");
+    assert.equal(result.data.x, 1);
+  });
+
+  it("should preserve nested data structures", () => {
+    const wh = new Webhook(secret);
+    const payload = JSON.stringify({
+      event: "endpoint.created",
+      data: { appId: "a1", endpointId: "e1", nested: { key: "val" } },
+      timestamp: "t",
+    });
+    const signature = wh.sign(msgId, timestamp, payload);
+    const headers = {
+      "webhook-id": msgId,
+      "webhook-timestamp": String(timestamp),
+      "webhook-signature": `v1,${signature}`,
+    };
+    const result = wh.verify(payload, headers);
+    assert.equal(result.data.nested.key, "val");
+  });
+});
+
+describe("Webhook Edge Cases", () => {
+  const secret = "whsec_dGVzdA==";
+  const msgId = "msg_test123";
+  const timestamp = Math.floor(Date.now() / 1000);
+
+  it("should accept unbranded headers", () => {
+    const wh = new Webhook(secret);
+    const payload = '{"event":"test"}';
+    const signature = wh.sign(msgId, timestamp, payload);
+    const headers = {
+      "webhook-id": msgId,
+      "webhook-timestamp": String(timestamp),
+      "webhook-signature": `v1,${signature}`,
+    };
+    const result = wh.verify(payload, headers);
+    assert.equal(result.event, "test");
+  });
+
+  it("should reject missing id header", () => {
+    const wh = new Webhook(secret);
+    assert.throws(() => wh.verify("{}", {
+      "webhook-timestamp": String(timestamp),
+      "webhook-signature": "v1,sig",
+    }));
+  });
+
+  it("should reject missing timestamp header", () => {
+    const wh = new Webhook(secret);
+    assert.throws(() => wh.verify("{}", {
+      "webhook-id": msgId,
+      "webhook-signature": "v1,sig",
+    }));
+  });
+
+  it("should reject missing signature header", () => {
+    const wh = new Webhook(secret);
+    assert.throws(() => wh.verify("{}", {
+      "webhook-id": msgId,
+      "webhook-timestamp": String(timestamp),
+    }));
   });
 });
