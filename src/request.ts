@@ -2,7 +2,7 @@ import { ApiException, type XOR } from "./util";
 import type { HttpErrorOut, HTTPValidationError } from "./HttpErrors";
 import { createErrorFromStatus, HookSniffError } from "./errors";
 
-export const LIB_VERSION = "1.0.0";
+export const LIB_VERSION = "1.2.0";
 const USER_AGENT = `hooksniff-libs/${LIB_VERSION}/javascript`;
 
 export enum HttpMethod {
