@@ -61,7 +61,7 @@ export class Webhook {
       event: parsed.event ?? parsed.eventType ?? "",
       data: parsed.data ?? {},
       timestamp: parsed.timestamp ?? "",
-    } as WebhookEventMap[T];
+    } as unknown as WebhookEventMap[T];
   }
 
   /**

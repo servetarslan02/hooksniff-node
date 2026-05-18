@@ -30,6 +30,17 @@ export type HookSniffRequestContext = {
    * Custom fetch implementation to use for HTTP requests.
    */
   fetch?: typeof fetch;
+  /**
+   * Response metadata from the last API call.
+   * Updated automatically after each request.
+   *
+   * @example
+   * ```ts
+   * const endpoints = await client.endpoint.list();
+   * console.log(client.endpoint.lastResponse?.requestId);
+   * ```
+   */
+  lastResponse?: import("./util").ResponseMetadata;
 } & XOR<
   {
     /** List of delays (in milliseconds) to wait before each retry attempt.*/
@@ -110,12 +121,15 @@ export class HookSniffRequest {
    * - 4xx → `ApiException<HttpErrorOut>`
    * - 429 → Auto-retry with Retry-After header
    * - 5xx → Auto-retry with exponential backoff
+   *
+   * After calling, access `this.lastResponseMetadata` for response headers.
    */
   public async send<R>(
     ctx: HookSniffRequestContext,
     parseResponseBody: (jsonObject: any) => R
   ): Promise<R> {
     const response = await this.sendInner(ctx);
+    this.captureMetadata(response, ctx);
     if (response.status === 204) {
       return <R>null;
     }
@@ -125,7 +139,33 @@ export class HookSniffRequest {
 
   /** Same as `send`, but the response body is discarded, not parsed. */
   public async sendNoResponseBody(ctx: HookSniffRequestContext): Promise<void> {
-    await this.sendInner(ctx);
+    const response = await this.sendInner(ctx);
+    this.captureMetadata(response, ctx);
+  }
+
+  /** Response metadata from the last request. */
+  public lastResponseMetadata?: import("./util").ResponseMetadata;
+
+  private captureMetadata(response: Response, ctx: HookSniffRequestContext) {
+    const headers: Record<string, string> = {};
+    response.headers.forEach((value: string, name: string) => {
+      headers[name] = value;
+    });
+
+    const metadata: import("./util").ResponseMetadata = {
+      statusCode: response.status,
+      requestId: headers["x-request-id"] || headers["x-hooksniff-request-id"],
+      rateLimitRemaining: headers["x-ratelimit-remaining"]
+        ? parseInt(headers["x-ratelimit-remaining"], 10)
+        : undefined,
+      rateLimitReset: headers["x-ratelimit-reset"]
+        ? parseInt(headers["x-ratelimit-reset"], 10)
+        : undefined,
+      headers,
+    };
+
+    this.lastResponseMetadata = metadata;
+    ctx.lastResponse = metadata;
   }
 
   private async sendInner(ctx: HookSniffRequestContext): Promise<Response> {

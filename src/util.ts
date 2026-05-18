@@ -2,6 +2,30 @@ export interface PostOptions {
   idempotencyKey?: string;
 }
 
+/**
+ * Response metadata from the last API request.
+ * Access via `client.<resource>.lastResponse` after any API call.
+ *
+ * @example
+ * ```ts
+ * const endpoints = await client.endpoint.list();
+ * console.log(client.endpoint.lastResponse?.requestId);
+ * console.log(client.endpoint.lastResponse?.rateLimitRemaining);
+ * ```
+ */
+export interface ResponseMetadata {
+  /** HTTP status code */
+  statusCode: number;
+  /** x-request-id header — use for debugging with HookSniff support */
+  requestId?: string;
+  /** x-ratelimit-remaining — remaining requests in current window */
+  rateLimitRemaining?: number;
+  /** x-ratelimit-reset — Unix timestamp when rate limit resets */
+  rateLimitReset?: number;
+  /** All response headers as a plain object */
+  headers: Record<string, string>;
+}
+
 export class ApiException<T> extends Error {
   public headers: Record<string, string> = {};
 

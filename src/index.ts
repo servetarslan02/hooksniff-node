@@ -36,7 +36,8 @@ import { Transform } from "./api/transform";
 import { subscribeToStream, type StreamOptions, type StreamSubscription } from "./stream";
 import type { HookSniffRequestContext } from "./request";
 
-export { type PostOptions, ApiException } from "./util";
+export { type PostOptions, ApiException, type ResponseMetadata } from "./util";
+import type { ResponseMetadata } from "./util";
 export { type ListResponse, type ListOptions, createPaginator, paginate } from "./pagination";
 export { HTTPValidationError, HttpErrorOut, ValidationError } from "./HttpErrors";
 export {
@@ -103,6 +104,21 @@ export class HookSniff {
       numRetries: options.numRetries ?? 2,
       fetch: options.fetch,
     };
+  }
+
+  /**
+   * Response metadata from the last API call.
+   * Updated automatically after each request on any resource.
+   *
+   * @example
+   * ```ts
+   * const endpoints = await client.endpoint.list();
+   * console.log(client.lastResponse?.requestId);
+   * console.log(client.lastResponse?.rateLimitRemaining);
+   * ```
+   */
+  public get lastResponse(): ResponseMetadata | undefined {
+    return this.requestCtx.lastResponse;
   }
 
   public get admin() { return new Admin(this.requestCtx); }
