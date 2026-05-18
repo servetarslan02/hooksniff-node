@@ -85,6 +85,9 @@ export class HookSniff {
   protected readonly requestCtx: HookSniffRequestContext;
 
   public constructor(token: string, options: HookSniffOptions = {}) {
+    if (!token || token.trim() === "") {
+      throw new Error("token is required");
+    }
     const baseUrl: string = options.serverUrl ?? DEFAULT_BASE_URL;
 
     if (options.retryScheduleInMs) {

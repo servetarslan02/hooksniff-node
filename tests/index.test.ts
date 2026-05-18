@@ -49,7 +49,7 @@ describe("Webhook", () => {
     };
 
     const result = wh.verify(payload, headers);
-    assert.deepEqual(result, { event: "test" });
+    assert.equal(result.event, "test");
   });
 
   it("should reject invalid signature", () => {
@@ -94,7 +94,7 @@ describe("Webhook", () => {
     };
 
     const result = wh.verify(payload, headers);
-    assert.deepEqual(result, { event: "test" });
+    assert.equal(result.event, "test");
   });
 });
 

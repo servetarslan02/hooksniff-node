@@ -18,6 +18,21 @@ export interface WebhookOptions {
   format?: "raw";
 }
 
+function resolveHeaders(headers_: Record<string, string>): Record<string, string> {
+  const headers: Record<string, string> = {};
+  for (const key of Object.keys(headers_)) {
+    headers[key.toLowerCase()] = headers_[key];
+  }
+
+  headers["webhook-id"] = headers["hooksniff-id"] ?? headers["svix-id"] ?? headers["webhook-id"] ?? "";
+  headers["webhook-signature"] =
+    headers["hooksniff-signature"] ?? headers["svix-signature"] ?? headers["webhook-signature"] ?? "";
+  headers["webhook-timestamp"] =
+    headers["hooksniff-timestamp"] ?? headers["svix-timestamp"] ?? headers["webhook-timestamp"] ?? "";
+
+  return headers;
+}
+
 export class Webhook {
   private readonly inner: StdWh;
 
@@ -43,16 +58,7 @@ export class Webhook {
       | WebhookUnbrandedRequiredHeaders
       | Record<string, string>
   ): WebhookEventMap[T] {
-    const headers: Record<string, string> = {};
-    for (const key of Object.keys(headers_)) {
-      headers[key.toLowerCase()] = (headers_ as Record<string, string>)[key];
-    }
-
-    headers["webhook-id"] = headers["hooksniff-id"] ?? headers["webhook-id"] ?? "";
-    headers["webhook-signature"] =
-      headers["hooksniff-signature"] ?? headers["webhook-signature"] ?? "";
-    headers["webhook-timestamp"] =
-      headers["hooksniff-timestamp"] ?? headers["webhook-timestamp"] ?? "";
+    const headers = resolveHeaders(headers_ as Record<string, string>);
 
     const raw = this.inner.verify(payload, headers);
     const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
@@ -75,16 +81,7 @@ export class Webhook {
       | WebhookUnbrandedRequiredHeaders
       | Record<string, string>
   ): unknown {
-    const headers: Record<string, string> = {};
-    for (const key of Object.keys(headers_)) {
-      headers[key.toLowerCase()] = (headers_ as Record<string, string>)[key];
-    }
-
-    headers["webhook-id"] = headers["hooksniff-id"] ?? headers["webhook-id"] ?? "";
-    headers["webhook-signature"] =
-      headers["hooksniff-signature"] ?? headers["webhook-signature"] ?? "";
-    headers["webhook-timestamp"] =
-      headers["hooksniff-timestamp"] ?? headers["webhook-timestamp"] ?? "";
+    const headers = resolveHeaders(headers_ as Record<string, string>);
 
     return this.inner.verify(payload, headers);
   }
