@@ -37,6 +37,7 @@ import { subscribeToStream, type StreamOptions, type StreamSubscription } from "
 import type { HookSniffRequestContext } from "./request";
 
 export { type PostOptions, ApiException } from "./util";
+export { type ListResponse, type ListOptions, createPaginator, paginate } from "./pagination";
 export { HTTPValidationError, HttpErrorOut, ValidationError } from "./HttpErrors";
 export {
   HookSniffError,

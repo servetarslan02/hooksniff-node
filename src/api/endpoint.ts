@@ -118,6 +118,63 @@ export class Endpoint {
   }
 
   /**
+   * Auto-paginate through all endpoints.
+   *
+   * @example
+   * ```ts
+   * for await (const ep of hs.endpoint.listAll({ limit: 100 })) {
+   *   console.log(ep.id, ep.url);
+   * }
+   * ```
+   */
+  public listAll(options?: Omit<EndpointListOptions, "iterator">): AsyncIterable<EndpointOut> {
+    const self = this;
+    return {
+      [Symbol.asyncIterator]: () => {
+        let currentPromise: Promise<ListResponseEndpointOut> | null = null;
+        let currentIndex = 0;
+        let done = false;
+        let currentIterator: string | null = null;
+
+        return {
+          async next(): Promise<IteratorResult<EndpointOut>> {
+            if (done) return { done: true, value: undefined };
+
+            if (currentPromise === null) {
+              const request = new HookSniffRequest(HttpMethod.GET, "/v1/endpoint");
+              request.setQueryParams({
+                limit: options?.limit,
+                iterator: currentIterator,
+                order: options?.order,
+              });
+              currentPromise = request.send(
+                self.requestCtx,
+                ListResponseEndpointOutSerializer._fromJsonObject
+              );
+              currentIndex = 0;
+            }
+
+            const page = await currentPromise;
+
+            if (currentIndex < page.data.length) {
+              return { done: false, value: page.data[currentIndex++] };
+            }
+
+            if (!page.done && page.iterator) {
+              currentIterator = page.iterator;
+              currentPromise = null;
+              return this.next();
+            }
+
+            done = true;
+            return { done: true, value: undefined };
+          },
+        };
+      },
+    };
+  }
+
+  /**
    * Create a new endpoint.
    *
    * @param endpointIn - The endpoint configuration

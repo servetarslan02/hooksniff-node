@@ -107,6 +107,75 @@ export class Message {
   }
 
   /**
+   * Auto-paginate through all messages.
+   *
+   * Returns an async iterable that automatically fetches the next page
+   * when needed. Use with `for await...of`.
+   *
+   * @param options - Filtering options (limit controls page size)
+   * @returns AsyncIterable of individual messages
+   *
+   * @example
+   * ```ts
+   * // Iterate through ALL messages (auto-paginate)
+   * for await (const msg of hs.message.listAll({ limit: 100 })) {
+   *   console.log(msg.id, msg.eventType);
+   * }
+   * ```
+   */
+  public listAll(options?: Omit<MessageListOptions, "iterator">): AsyncIterable<MessageOut> {
+    const self = this;
+    return {
+      [Symbol.asyncIterator]: () => {
+        let currentPromise: Promise<ListResponseMessageOut> | null = null;
+        let currentIndex = 0;
+        let done = false;
+        let currentIterator: string | null = null;
+
+        return {
+          async next(): Promise<IteratorResult<MessageOut>> {
+            if (done) return { done: true, value: undefined };
+
+            if (currentPromise === null) {
+              const request = new HookSniffRequest(HttpMethod.GET, "/v1/msg");
+              request.setQueryParams({
+                limit: options?.limit,
+                iterator: currentIterator,
+                channel: options?.channel,
+                before: options?.before,
+                after: options?.after,
+                with_content: options?.withContent,
+                tag: options?.tag,
+                event_types: options?.eventTypes,
+              });
+              currentPromise = request.send(
+                self.requestCtx,
+                ListResponseMessageOutSerializer._fromJsonObject
+              );
+              currentIndex = 0;
+            }
+
+            const page = await currentPromise;
+
+            if (currentIndex < page.data.length) {
+              return { done: false, value: page.data[currentIndex++] };
+            }
+
+            if (!page.done && page.iterator) {
+              currentIterator = page.iterator;
+              currentPromise = null;
+              return this.next();
+            }
+
+            done = true;
+            return { done: true, value: undefined };
+          },
+        };
+      },
+    };
+  }
+
+  /**
    * Create a new message and dispatch it to all matching endpoints.
    *
    * The `eventType` determines which endpoints receive the webhook.
