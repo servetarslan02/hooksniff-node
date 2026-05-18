@@ -122,6 +122,78 @@ export class GatewayTimeoutError extends HookSniffError {
   }
 }
 
+/** 408 Request Timeout — The server timed out waiting for the request */
+export class RequestTimeoutError extends HookSniffError {
+  constructor(message?: string, headers: Record<string, string> = {}) {
+    super(408, message || "Request timeout", headers);
+    this.name = "RequestTimeoutError";
+  }
+}
+
+/** 410 Gone — The resource has been permanently removed */
+export class GoneError extends HookSniffError {
+  constructor(message?: string, headers: Record<string, string> = {}) {
+    super(410, message || "Gone", headers);
+    this.name = "GoneError";
+  }
+}
+
+/** 413 Payload Too Large — The request body exceeds the server limit */
+export class PayloadTooLargeError extends HookSniffError {
+  constructor(message?: string, headers: Record<string, string> = {}) {
+    super(413, message || "Payload too large", headers);
+    this.name = "PayloadTooLargeError";
+  }
+}
+
+/** 501 Not Implemented — The server does not support this functionality */
+export class NotImplementedError extends HookSniffError {
+  constructor(message?: string, headers: Record<string, string> = {}) {
+    super(501, message || "Not implemented", headers);
+    this.name = "NotImplementedError";
+  }
+}
+
+/** 507 Insufficient Storage — The server cannot store the representation */
+export class InsufficientStorageError extends HookSniffError {
+  constructor(message?: string, headers: Record<string, string> = {}) {
+    super(507, message || "Insufficient storage", headers);
+    this.name = "InsufficientStorageError";
+  }
+}
+
+/** 508 Loop Detected — The server detected an infinite loop */
+export class LoopDetectedError extends HookSniffError {
+  constructor(message?: string, headers: Record<string, string> = {}) {
+    super(508, message || "Loop detected", headers);
+    this.name = "LoopDetectedError";
+  }
+}
+
+/** Timeout — request exceeded the configured timeout (non-HTTP) */
+export class TimeoutError extends HookSniffError {
+  constructor(message?: string, headers: Record<string, string> = {}) {
+    super(0, message || "Request timeout", headers);
+    this.name = "TimeoutError";
+  }
+}
+
+/** Network error — connection failed, DNS error, etc. (non-HTTP) */
+export class NetworkError extends HookSniffError {
+  constructor(message?: string, headers: Record<string, string> = {}) {
+    super(0, message || "Network error", headers);
+    this.name = "NetworkError";
+  }
+}
+
+/** Authentication error — token invalid, expired, or missing */
+export class AuthenticationError extends HookSniffError {
+  constructor(message?: string, headers: Record<string, string> = {}) {
+    super(401, message || "Authentication failed", headers);
+    this.name = "AuthenticationError";
+  }
+}
+
 /** Validation error item from 422 responses */
 export interface ValidationErrorItem {
   /** Location of the error (e.g., ["body", "email"]) */
@@ -167,6 +239,18 @@ export function createErrorFromStatus(
       return new ServiceUnavailableError(body?.detail, headers);
     case 504:
       return new GatewayTimeoutError(body?.detail, headers);
+    case 408:
+      return new RequestTimeoutError(body?.detail, headers);
+    case 410:
+      return new GoneError(body?.detail, headers);
+    case 413:
+      return new PayloadTooLargeError(body?.detail, headers);
+    case 501:
+      return new NotImplementedError(body?.detail, headers);
+    case 507:
+      return new InsufficientStorageError(body?.detail, headers);
+    case 508:
+      return new LoopDetectedError(body?.detail, headers);
     default:
       return new HookSniffError(
         statusCode,
