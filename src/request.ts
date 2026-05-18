@@ -198,6 +198,7 @@ export class HookSniffRequest {
         accept: "application/json, */*;q=0.8",
         authorization: `Bearer ${ctx.token}`,
         "user-agent": USER_AGENT,
+        "x-hooksniff-sdk": USER_AGENT,
         "hooksniff-req-id": randomId.toString(),
         ...ctx.headers,
         ...this.headerParams,
