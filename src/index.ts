@@ -72,6 +72,8 @@ export type HookSniffOptions = {
   serverUrl?: string;
   requestTimeout?: number;
   fetch?: typeof fetch;
+  /** Custom headers to include in every request */
+  headers?: Record<string, string>;
 } & (
   | { retryScheduleInMs?: number[]; numRetries?: never }
   | { numRetries?: number; retryScheduleInMs?: never }
@@ -93,6 +95,7 @@ export class HookSniff {
         debug: options.debug,
         retryScheduleInMs: options.retryScheduleInMs,
         fetch: options.fetch,
+        headers: options.headers,
       };
       return;
     }
@@ -103,6 +106,7 @@ export class HookSniff {
       debug: options.debug,
       numRetries: options.numRetries ?? 2,
       fetch: options.fetch,
+      headers: options.headers,
     };
   }
 

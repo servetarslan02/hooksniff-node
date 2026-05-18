@@ -30,6 +30,8 @@ export type HookSniffRequestContext = {
    * Custom fetch implementation to use for HTTP requests.
    */
   fetch?: typeof fetch;
+  /** Custom headers to include in every request */
+  headers?: Record<string, string>;
   /**
    * Response metadata from the last API call.
    * Updated automatically after each request.
@@ -197,6 +199,7 @@ export class HookSniffRequest {
         authorization: `Bearer ${ctx.token}`,
         "user-agent": USER_AGENT,
         "hooksniff-req-id": randomId.toString(),
+        ...ctx.headers,
         ...this.headerParams,
       },
       credentials: isCredentialsSupported ? "same-origin" : undefined,
