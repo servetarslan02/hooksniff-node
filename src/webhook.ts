@@ -1,5 +1,6 @@
 import { Webhook as StdWh } from "standardwebhooks";
 export { WebhookVerificationError } from "standardwebhooks";
+import type { WebhookEvent, WebhookEventMap } from "./webhook-events";
 
 export interface WebhookRequiredHeaders {
   "hooksniff-id": string;
@@ -24,7 +25,50 @@ export class Webhook {
     this.inner = new StdWh(secret, options);
   }
 
-  public verify(
+  /**
+   * Verify and parse a webhook payload.
+   *
+   * Verifies the HMAC-SHA256 signature, then parses the payload
+   * into a typed WebhookEvent with `event`, `data`, and `timestamp`.
+   *
+   * @param payload - Raw request body (string or Buffer)
+   * @param headers - Request headers containing hooksniff-id, hooksniff-timestamp, hooksniff-signature
+   * @returns Parsed WebhookEvent with typed fields
+   * @throws WebhookVerificationError if signature is invalid or timestamp is outside tolerance
+   */
+  public verify<T extends keyof WebhookEventMap = keyof WebhookEventMap>(
+    payload: string | Buffer,
+    headers_:
+      | WebhookRequiredHeaders
+      | WebhookUnbrandedRequiredHeaders
+      | Record<string, string>
+  ): WebhookEventMap[T] {
+    const headers: Record<string, string> = {};
+    for (const key of Object.keys(headers_)) {
+      headers[key.toLowerCase()] = (headers_ as Record<string, string>)[key];
+    }
+
+    headers["webhook-id"] = headers["hooksniff-id"] ?? headers["webhook-id"] ?? "";
+    headers["webhook-signature"] =
+      headers["hooksniff-signature"] ?? headers["webhook-signature"] ?? "";
+    headers["webhook-timestamp"] =
+      headers["hooksniff-timestamp"] ?? headers["webhook-timestamp"] ?? "";
+
+    const raw = this.inner.verify(payload, headers);
+    const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+
+    return {
+      event: parsed.event ?? parsed.eventType ?? "",
+      data: parsed.data ?? {},
+      timestamp: parsed.timestamp ?? "",
+    } as WebhookEventMap[T];
+  }
+
+  /**
+   * Verify and return raw payload without parsing.
+   * Use this when you need the raw JSON string instead of a typed event.
+   */
+  public verifyRaw(
     payload: string | Buffer,
     headers_:
       | WebhookRequiredHeaders
