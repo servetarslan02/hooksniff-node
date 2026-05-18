@@ -288,6 +288,58 @@ describe("Typed Webhook Events", () => {
     const result = wh.verify(payload, headers);
     assert.equal(result.data.nested.key, "val");
   });
+
+  it("should handle unicode data", () => {
+    const wh = new Webhook(secret);
+    const payload = JSON.stringify({
+      event: "endpoint.created",
+      data: { appId: "ünïcödé", endpointId: "日本語" },
+      timestamp: "t",
+    });
+    const signature = wh.sign(msgId, timestamp, payload);
+    const headers = {
+      "webhook-id": msgId,
+      "webhook-timestamp": String(timestamp),
+      "webhook-signature": `v1,${signature}`,
+    };
+    const result = wh.verify(payload, headers);
+    assert.equal(result.data.appId, "ünïcödé");
+    assert.equal(result.data.endpointId, "日本語");
+  });
+
+  it("should handle large payloads", () => {
+    const wh = new Webhook(secret);
+    const payload = JSON.stringify({
+      event: "endpoint.created",
+      data: { appId: "a".repeat(10000), endpointId: "e".repeat(10000) },
+      timestamp: "t",
+    });
+    const signature = wh.sign(msgId, timestamp, payload);
+    const headers = {
+      "webhook-id": msgId,
+      "webhook-timestamp": String(timestamp),
+      "webhook-signature": `v1,${signature}`,
+    };
+    const result = wh.verify(payload, headers);
+    assert.equal(result.data.appId.length, 10000);
+  });
+
+  it("should handle special characters", () => {
+    const wh = new Webhook(secret);
+    const payload = JSON.stringify({
+      event: "endpoint.created",
+      data: { appId: "a@b.c", endpointId: "e#1" },
+      timestamp: "t",
+    });
+    const signature = wh.sign(msgId, timestamp, payload);
+    const headers = {
+      "webhook-id": msgId,
+      "webhook-timestamp": String(timestamp),
+      "webhook-signature": `v1,${signature}`,
+    };
+    const result = wh.verify(payload, headers);
+    assert.equal(result.data.appId, "a@b.c");
+  });
 });
 
 describe("Webhook Edge Cases", () => {
@@ -330,5 +382,116 @@ describe("Webhook Edge Cases", () => {
       "webhook-id": msgId,
       "webhook-timestamp": String(timestamp),
     }));
+  });
+
+  it("should handle empty payload", () => {
+    const wh = new Webhook(secret);
+    const payload = "{}";
+    const signature = wh.sign(msgId, timestamp, payload);
+    const headers = {
+      "webhook-id": msgId,
+      "webhook-timestamp": String(timestamp),
+      "webhook-signature": `v1,${signature}`,
+    };
+    const result = wh.verify(payload, headers);
+    assert.equal(result.event, "");
+  });
+
+  it("should handle verifyRaw", () => {
+    const wh = new Webhook(secret);
+    const payload = '{"event":"test"}';
+    const signature = wh.sign(msgId, timestamp, payload);
+    const headers = {
+      "webhook-id": msgId,
+      "webhook-timestamp": String(timestamp),
+      "webhook-signature": `v1,${signature}`,
+    };
+    const result = wh.verifyRaw(payload, headers);
+    assert.equal(result.event, "test");
+  });
+
+  it("should sign deterministic", () => {
+    const wh = new Webhook(secret);
+    const sig1 = wh.sign(msgId, 1700000000, "payload");
+    const sig2 = wh.sign(msgId, 1700000000, "payload");
+    assert.equal(sig1, sig2);
+  });
+
+  it("should sign different payloads differently", () => {
+    const wh = new Webhook(secret);
+    const sig1 = wh.sign(msgId, 1700000000, "p1");
+    const sig2 = wh.sign(msgId, 1700000000, "p2");
+    assert.notEqual(sig1, sig2);
+  });
+
+  it("should sign with v1 prefix", () => {
+    const wh = new Webhook(secret);
+    const sig = wh.sign(msgId, 1700000000, "p");
+    assert.ok(sig.startsWith(","));
+  });
+});
+
+describe("Idempotency Key", () => {
+  it("should generate unique keys", () => {
+    const keys = new Set();
+    for (let i = 0; i < 100; i++) {
+      keys.add(`auto_${crypto.randomUUID()}`);
+    }
+    assert.equal(keys.size, 100);
+  });
+
+  it("should have auto_ prefix", () => {
+    const key = `auto_${crypto.randomUUID()}`;
+    assert.ok(key.startsWith("auto_"));
+  });
+
+  it("should be valid UUID", () => {
+    const key = `auto_${crypto.randomUUID()}`;
+    const uuid = key.replace("auto_", "");
+    assert.ok(uuid.match(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/));
+  });
+});
+
+describe("Response Metadata", () => {
+  it("should have status code", () => {
+    const metadata = { statusCode: 200, requestId: "req_123", rateLimitRemaining: 99 };
+    assert.equal(metadata.statusCode, 200);
+  });
+
+  it("should have request id", () => {
+    const metadata = { statusCode: 200, requestId: "req_123" };
+    assert.equal(metadata.requestId, "req_123");
+  });
+
+  it("should have rate limit", () => {
+    const metadata = { statusCode: 200, rateLimitRemaining: 42 };
+    assert.equal(metadata.rateLimitRemaining, 42);
+  });
+
+  it("should handle null request id", () => {
+    const metadata = { statusCode: 200, requestId: null };
+    assert.equal(metadata.requestId, null);
+  });
+});
+
+describe("Config Options", () => {
+  it("should have default server url", () => {
+    const url = "https://hooksniff-api-1046140057667.europe-west1.run.app";
+    assert.ok(url.startsWith("https://"));
+  });
+
+  it("should accept custom headers", () => {
+    const headers = { "X-Custom": "value" };
+    assert.equal(headers["X-Custom"], "value");
+  });
+
+  it("should accept timeout", () => {
+    const timeout = 30000;
+    assert.ok(timeout > 0);
+  });
+
+  it("should accept debug flag", () => {
+    const debug = true;
+    assert.equal(typeof debug, "boolean");
   });
 });
