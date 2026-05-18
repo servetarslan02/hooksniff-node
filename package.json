@@ -1,6 +1,6 @@
 {
   "name": "hooksniff",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Official HookSniff SDK — webhook delivery, verification, and management",
   "author": "HookSniff",
   "repository": "https://github.com/servetarslan02/HookSniff.git",
@@ -38,7 +38,7 @@
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "prepare": "npm run build",
-    "test": "node --experimental-vm-modules node_modules/.bin/jest --passWithNoTests",
+    "test": "node --experimental-vm-modules --import tsx --test tests/index.test.ts",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
