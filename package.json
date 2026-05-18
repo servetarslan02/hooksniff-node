@@ -4,7 +4,7 @@
   "description": "Official HookSniff SDK — webhook delivery, verification, and management",
   "author": "HookSniff",
   "repository": "https://github.com/servetarslan02/HookSniff.git",
-  "homepage": "https://hooksniff.com",
+  "homepage": "https://hooksniff.vercel.app",
   "license": "MIT",
   "keywords": [
     "hooksniff",

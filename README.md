@@ -6,7 +6,7 @@
   <a href="https://github.com/servetarslan02/hooksniff-node/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/hooksniff" alt="License"></a>
 </p>
 
-Official Node.js/TypeScript SDK for the [HookSniff](https://hooksniff.com) webhook delivery platform.
+Official Node.js/TypeScript SDK for the [HookSniff](https://hooksniff.vercel.app) webhook delivery platform.
 
 ## Installation
 
@@ -122,7 +122,7 @@ try {
 
 - [npm](https://www.npmjs.com/package/hooksniff)
 - [GitHub](https://github.com/servetarslan02/hooksniff-node)
-- [HookSniff](https://hooksniff.com)
+- [HookSniff](https://hooksniff.vercel.app)
 
 ## License
 
