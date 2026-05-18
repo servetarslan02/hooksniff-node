@@ -31,7 +31,7 @@ export class BackgroundTask {
    * List all background tasks for the authenticated customer.
    */
   public list(): Promise<BackgroundTaskOut[]> {
-    const request = new HookSniffRequest(HttpMethod.GET, "/api/v1/background-tasks");
+    const request = new HookSniffRequest(HttpMethod.GET, "/v1/background-tasks");
     return request.send(this.requestCtx, (arr: any[]) =>
       arr.map(BackgroundTaskOutSerializer._fromJsonObject)
     );
@@ -45,7 +45,7 @@ export class BackgroundTask {
   public get(taskId: string): Promise<BackgroundTaskOut> {
     const request = new HookSniffRequest(
       HttpMethod.GET,
-      "/api/v1/background-tasks/{task_id}"
+      "/v1/background-tasks/{task_id}"
     );
     request.setPathParam("task_id", taskId);
     return request.send(this.requestCtx, BackgroundTaskOutSerializer._fromJsonObject);
@@ -59,7 +59,7 @@ export class BackgroundTask {
   public cancel(taskId: string): Promise<BackgroundTaskOut> {
     const request = new HookSniffRequest(
       HttpMethod.PUT,
-      "/api/v1/background-tasks/{task_id}"
+      "/v1/background-tasks/{task_id}"
     );
     request.setPathParam("task_id", taskId);
     return request.send(this.requestCtx, BackgroundTaskOutSerializer._fromJsonObject);

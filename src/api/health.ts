@@ -22,7 +22,7 @@ export class Health {
    * @throws {HookSniffError} If the API is unreachable or returns an error
    */
   public ping(): Promise<void> {
-    const request = new HookSniffRequest(HttpMethod.GET, "/api/v1/health/ping");
+    const request = new HookSniffRequest(HttpMethod.GET, "/v1/health/ping");
     return request.sendNoResponseBody(this.requestCtx);
   }
 }

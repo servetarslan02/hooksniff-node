@@ -120,20 +120,20 @@ export class IntegrationApi {
 
   /** List all integrations. */
   public list(): Promise<Integration[]> {
-    const req = new HookSniffRequest(HttpMethod.GET, "/api/v1/integrations");
+    const req = new HookSniffRequest(HttpMethod.GET, "/v1/integrations");
     return req.send(this.requestCtx, (arr: any[]) => arr.map(IntegrationFromJson));
   }
 
   /** Get integration details. */
   public get(id: string): Promise<Integration> {
-    const req = new HookSniffRequest(HttpMethod.GET, "/api/v1/integrations/{id}");
+    const req = new HookSniffRequest(HttpMethod.GET, "/v1/integrations/{id}");
     req.setPathParam("id", id);
     return req.send(this.requestCtx, IntegrationFromJson);
   }
 
   /** Create a new integration. */
   public create(body: IntegrationIn): Promise<Integration> {
-    const req = new HookSniffRequest(HttpMethod.POST, "/api/v1/integrations");
+    const req = new HookSniffRequest(HttpMethod.POST, "/v1/integrations");
     req.setBody({
       name: body.name, description: body.description,
       connector_config_id: body.connectorConfigId, endpoint_id: body.endpointId,
@@ -145,7 +145,7 @@ export class IntegrationApi {
 
   /** Update an integration. */
   public update(id: string, body: IntegrationUpdate): Promise<Integration> {
-    const req = new HookSniffRequest(HttpMethod.PUT, "/api/v1/integrations/{id}");
+    const req = new HookSniffRequest(HttpMethod.PUT, "/v1/integrations/{id}");
     req.setPathParam("id", id);
     const payload: any = {};
     if (body.name !== undefined) payload.name = body.name;
@@ -162,14 +162,14 @@ export class IntegrationApi {
 
   /** Delete an integration. */
   public delete(id: string): Promise<void> {
-    const req = new HookSniffRequest(HttpMethod.DELETE, "/api/v1/integrations/{id}");
+    const req = new HookSniffRequest(HttpMethod.DELETE, "/v1/integrations/{id}");
     req.setPathParam("id", id);
     return req.sendNoResponseBody(this.requestCtx);
   }
 
   /** Send a test event through the integration. */
   public test(id: string): Promise<{ success: boolean; eventId: string; message: string }> {
-    const req = new HookSniffRequest(HttpMethod.POST, "/api/v1/integrations/{id}/test");
+    const req = new HookSniffRequest(HttpMethod.POST, "/v1/integrations/{id}/test");
     req.setPathParam("id", id);
     return req.send(this.requestCtx, (json: any) => ({
       success: json['success'], eventId: json['event_id'], message: json['message'],
@@ -178,7 +178,7 @@ export class IntegrationApi {
 
   /** List events for an integration. */
   public listEvents(id: string, options?: EventListOptions): Promise<IntegrationEvent[]> {
-    const req = new HookSniffRequest(HttpMethod.GET, "/api/v1/integrations/{id}/events");
+    const req = new HookSniffRequest(HttpMethod.GET, "/v1/integrations/{id}/events");
     req.setPathParam("id", id);
     if (options?.status) req.setQueryParam("status", options.status);
     if (options?.eventType) req.setQueryParam("event_type", options.eventType);
@@ -189,7 +189,7 @@ export class IntegrationApi {
 
   /** Get statistics for an integration. */
   public getStats(id: string): Promise<IntegrationStats> {
-    const req = new HookSniffRequest(HttpMethod.GET, "/api/v1/integrations/{id}/stats");
+    const req = new HookSniffRequest(HttpMethod.GET, "/v1/integrations/{id}/stats");
     req.setPathParam("id", id);
     return req.send(this.requestCtx, StatsFromJson);
   }

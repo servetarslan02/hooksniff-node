@@ -22,7 +22,7 @@ export class Statistics {
    * Returns message delivery counts and other usage metrics.
    */
   public aggregateAppStats(): Promise<any> {
-    const request = new HookSniffRequest(HttpMethod.GET, "/api/v1/stats/usage/app");
+    const request = new HookSniffRequest(HttpMethod.GET, "/v1/stats/usage/app");
     return request.send(this.requestCtx, (x) => x);
   }
 }

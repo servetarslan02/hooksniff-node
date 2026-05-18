@@ -87,7 +87,7 @@ export function subscribeToStream(
   let closed = false;
 
   function buildUrl(): string {
-    const url = new URL(`${ctx.baseUrl}/api/v1/stream`);
+    const url = new URL(`${ctx.baseUrl}/v1/stream`);
     if (eventTypes?.length) {
       url.searchParams.set("event_types", eventTypes.join(","));
     }

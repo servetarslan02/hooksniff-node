@@ -93,7 +93,7 @@ export class MessageAttempt {
   ): Promise<ListResponseMessageAttemptOut> {
     const request = new HookSniffRequest(
       HttpMethod.GET,
-      "/api/v1/attempt/endpoint/{endpoint_id}"
+      "/v1/attempt/endpoint/{endpoint_id}"
     );
 
     request.setPathParam("endpoint_id", endpointId);
@@ -130,7 +130,7 @@ export class MessageAttempt {
   ): Promise<ListResponseMessageAttemptOut> {
     const request = new HookSniffRequest(
       HttpMethod.GET,
-      "/api/v1/attempt/msg/{msg_id}"
+      "/v1/attempt/msg/{msg_id}"
     );
 
     request.setPathParam("msg_id", msgId);
@@ -171,7 +171,7 @@ export class MessageAttempt {
   public get(msgId: string, attemptId: string): Promise<MessageAttemptOut> {
     const request = new HookSniffRequest(
       HttpMethod.GET,
-      "/api/v1/msg/{msg_id}/attempt/{attempt_id}"
+      "/v1/msg/{msg_id}/attempt/{attempt_id}"
     );
 
     request.setPathParam("msg_id", msgId);
@@ -197,7 +197,7 @@ export class MessageAttempt {
   public resend(msgId: string, endpointId: string): Promise<void> {
     const request = new HookSniffRequest(
       HttpMethod.POST,
-      "/api/v1/msg/{msg_id}/endpoint/{endpoint_id}/resend"
+      "/v1/msg/{msg_id}/endpoint/{endpoint_id}/resend"
     );
 
     request.setPathParam("msg_id", msgId);

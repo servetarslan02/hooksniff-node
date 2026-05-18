@@ -40,7 +40,7 @@ export class MessagePoller {
    * @param options - Optional filters (limit, endpointId, eventType, includePayload)
    */
   public poll(consumerId: string, options?: PollOptions): Promise<MessagePollerPollResponse> {
-    const request = new HookSniffRequest(HttpMethod.GET, "/api/v1/message-poller/poll");
+    const request = new HookSniffRequest(HttpMethod.GET, "/v1/message-poller/poll");
     request.setQueryParam("consumer_id", consumerId);
     if (options?.limit !== undefined) request.setQueryParam("limit", options.limit.toString());
     if (options?.endpointId) request.setQueryParam("endpoint_id", options.endpointId);
@@ -58,7 +58,7 @@ export class MessagePoller {
    * @param options - Optional endpoint filter
    */
   public seek(consumerId: string, messageId: string, options?: SeekOptions): Promise<MessagePollerCursorResponse> {
-    const request = new HookSniffRequest(HttpMethod.POST, "/api/v1/message-poller/seek");
+    const request = new HookSniffRequest(HttpMethod.POST, "/v1/message-poller/seek");
     request.setBody({
       consumer_id: consumerId,
       message_id: messageId,
@@ -76,7 +76,7 @@ export class MessagePoller {
    * @param options - Optional endpoint filter
    */
   public commit(consumerId: string, messageId: string, options?: CommitOptions): Promise<MessagePollerCommitResponse> {
-    const request = new HookSniffRequest(HttpMethod.POST, "/api/v1/message-poller/commit");
+    const request = new HookSniffRequest(HttpMethod.POST, "/v1/message-poller/commit");
     request.setBody({
       consumer_id: consumerId,
       message_id: messageId,

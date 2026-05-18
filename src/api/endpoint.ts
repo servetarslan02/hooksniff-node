@@ -103,7 +103,7 @@ export class Endpoint {
    * ```
    */
   public list(options?: EndpointListOptions): Promise<ListResponseEndpointOut> {
-    const request = new HookSniffRequest(HttpMethod.GET, "/api/v1/endpoint");
+    const request = new HookSniffRequest(HttpMethod.GET, "/v1/endpoint");
 
     request.setQueryParams({
       limit: options?.limit,
@@ -138,7 +138,7 @@ export class Endpoint {
     endpointIn: EndpointIn,
     options?: EndpointCreateOptions
   ): Promise<EndpointOut> {
-    const request = new HookSniffRequest(HttpMethod.POST, "/api/v1/endpoint");
+    const request = new HookSniffRequest(HttpMethod.POST, "/v1/endpoint");
 
     request.setHeaderParam("idempotency-key", options?.idempotencyKey);
     request.setBody(EndpointInSerializer._toJsonObject(endpointIn));
@@ -161,7 +161,7 @@ export class Endpoint {
   public get(endpointId: string): Promise<EndpointOut> {
     const request = new HookSniffRequest(
       HttpMethod.GET,
-      "/api/v1/endpoint/{endpoint_id}"
+      "/v1/endpoint/{endpoint_id}"
     );
 
     request.setPathParam("endpoint_id", endpointId);
@@ -182,7 +182,7 @@ export class Endpoint {
   ): Promise<EndpointOut> {
     const request = new HookSniffRequest(
       HttpMethod.PUT,
-      "/api/v1/endpoint/{endpoint_id}"
+      "/v1/endpoint/{endpoint_id}"
     );
 
     request.setPathParam("endpoint_id", endpointId);
@@ -204,7 +204,7 @@ export class Endpoint {
   public delete(endpointId: string): Promise<void> {
     const request = new HookSniffRequest(
       HttpMethod.DELETE,
-      "/api/v1/endpoint/{endpoint_id}"
+      "/v1/endpoint/{endpoint_id}"
     );
 
     request.setPathParam("endpoint_id", endpointId);
@@ -225,7 +225,7 @@ export class Endpoint {
   ): Promise<EndpointOut> {
     const request = new HookSniffRequest(
       HttpMethod.PATCH,
-      "/api/v1/endpoint/{endpoint_id}"
+      "/v1/endpoint/{endpoint_id}"
     );
 
     request.setPathParam("endpoint_id", endpointId);
@@ -243,7 +243,7 @@ export class Endpoint {
   public getHeaders(endpointId: string): Promise<EndpointHeadersOut> {
     const request = new HookSniffRequest(
       HttpMethod.GET,
-      "/api/v1/endpoint/{endpoint_id}/headers"
+      "/v1/endpoint/{endpoint_id}/headers"
     );
 
     request.setPathParam("endpoint_id", endpointId);
@@ -263,7 +263,7 @@ export class Endpoint {
   ): Promise<void> {
     const request = new HookSniffRequest(
       HttpMethod.PUT,
-      "/api/v1/endpoint/{endpoint_id}/headers"
+      "/v1/endpoint/{endpoint_id}/headers"
     );
 
     request.setPathParam("endpoint_id", endpointId);
@@ -284,7 +284,7 @@ export class Endpoint {
   ): Promise<void> {
     const request = new HookSniffRequest(
       HttpMethod.PATCH,
-      "/api/v1/endpoint/{endpoint_id}/headers"
+      "/v1/endpoint/{endpoint_id}/headers"
     );
 
     request.setPathParam("endpoint_id", endpointId);
@@ -310,7 +310,7 @@ export class Endpoint {
   public getSecret(endpointId: string): Promise<EndpointSecretOut> {
     const request = new HookSniffRequest(
       HttpMethod.GET,
-      "/api/v1/endpoint/{endpoint_id}/secret"
+      "/v1/endpoint/{endpoint_id}/secret"
     );
 
     request.setPathParam("endpoint_id", endpointId);
@@ -343,7 +343,7 @@ export class Endpoint {
   ): Promise<void> {
     const request = new HookSniffRequest(
       HttpMethod.POST,
-      "/api/v1/endpoint/{endpoint_id}/secret/rotate"
+      "/v1/endpoint/{endpoint_id}/secret/rotate"
     );
 
     request.setPathParam("endpoint_id", endpointId);

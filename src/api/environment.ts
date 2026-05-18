@@ -68,7 +68,7 @@ export class Environment {
    * List all environments for the authenticated customer.
    */
   public list(): Promise<EnvironmentOut[]> {
-    const request = new HookSniffRequest(HttpMethod.GET, "/api/v1/environments");
+    const request = new HookSniffRequest(HttpMethod.GET, "/v1/environments");
     return request.send(this.requestCtx, (arr: any[]) =>
       arr.map(EnvironmentOutSerializer._fromJsonObject)
     );
@@ -81,7 +81,7 @@ export class Environment {
    * @returns The created environment
    */
   public create(environmentIn: EnvironmentIn): Promise<EnvironmentOut> {
-    const request = new HookSniffRequest(HttpMethod.POST, "/api/v1/environments");
+    const request = new HookSniffRequest(HttpMethod.POST, "/v1/environments");
     request.setBody(EnvironmentInSerializer._toJsonObject(environmentIn));
     return request.send(this.requestCtx, EnvironmentOutSerializer._fromJsonObject);
   }
@@ -95,7 +95,7 @@ export class Environment {
   public get(environmentId: string): Promise<EnvironmentOut> {
     const request = new HookSniffRequest(
       HttpMethod.GET,
-      "/api/v1/environments/{environment_id}"
+      "/v1/environments/{environment_id}"
     );
     request.setPathParam("environment_id", environmentId);
     return request.send(this.requestCtx, EnvironmentOutSerializer._fromJsonObject);
@@ -114,7 +114,7 @@ export class Environment {
   ): Promise<EnvironmentOut> {
     const request = new HookSniffRequest(
       HttpMethod.PUT,
-      "/api/v1/environments/{environment_id}"
+      "/v1/environments/{environment_id}"
     );
     request.setPathParam("environment_id", environmentId);
     request.setBody(EnvironmentPatchSerializer._toJsonObject(environmentPatch));
@@ -129,7 +129,7 @@ export class Environment {
   public delete(environmentId: string): Promise<void> {
     const request = new HookSniffRequest(
       HttpMethod.DELETE,
-      "/api/v1/environments/{environment_id}"
+      "/v1/environments/{environment_id}"
     );
     request.setPathParam("environment_id", environmentId);
     return request.sendNoResponseBody(this.requestCtx);
@@ -146,7 +146,7 @@ export class Environment {
   public listVariables(environmentId: string): Promise<EnvironmentVariableOut[]> {
     const request = new HookSniffRequest(
       HttpMethod.GET,
-      "/api/v1/environments/{environment_id}/variables"
+      "/v1/environments/{environment_id}/variables"
     );
     request.setPathParam("environment_id", environmentId);
     return request.send(this.requestCtx, (arr: any[]) =>
@@ -164,7 +164,7 @@ export class Environment {
   public getVariable(environmentId: string, variableId: string): Promise<EnvironmentVariableOut> {
     const request = new HookSniffRequest(
       HttpMethod.GET,
-      "/api/v1/environments/{environment_id}/variables/{var_id}"
+      "/v1/environments/{environment_id}/variables/{var_id}"
     );
     request.setPathParam("environment_id", environmentId);
     request.setPathParam("var_id", variableId);
@@ -184,7 +184,7 @@ export class Environment {
   ): Promise<EnvironmentVariableOut> {
     const request = new HookSniffRequest(
       HttpMethod.POST,
-      "/api/v1/environments/{environment_id}/variables"
+      "/v1/environments/{environment_id}/variables"
     );
     request.setPathParam("environment_id", environmentId);
     request.setBody(EnvironmentVariableInSerializer._toJsonObject(variableIn));
@@ -206,7 +206,7 @@ export class Environment {
   ): Promise<EnvironmentVariableOut> {
     const request = new HookSniffRequest(
       HttpMethod.PUT,
-      "/api/v1/environments/{environment_id}/variables/{var_id}"
+      "/v1/environments/{environment_id}/variables/{var_id}"
     );
     request.setPathParam("environment_id", environmentId);
     request.setPathParam("var_id", variableId);
@@ -223,7 +223,7 @@ export class Environment {
   public deleteVariable(environmentId: string, variableId: string): Promise<void> {
     const request = new HookSniffRequest(
       HttpMethod.DELETE,
-      "/api/v1/environments/{environment_id}/variables/{var_id}"
+      "/v1/environments/{environment_id}/variables/{var_id}"
     );
     request.setPathParam("environment_id", environmentId);
     request.setPathParam("var_id", variableId);
@@ -243,7 +243,7 @@ export class Environment {
   ): Promise<EnvironmentVariableOut[]> {
     const request = new HookSniffRequest(
       HttpMethod.POST,
-      "/api/v1/environments/{environment_id}/variables/bulk"
+      "/v1/environments/{environment_id}/variables/bulk"
     );
     request.setPathParam("environment_id", environmentId);
     request.setBody(EnvironmentVariableBulkUpsertInSerializer._toJsonObject(bulkIn));

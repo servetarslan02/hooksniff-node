@@ -6,38 +6,38 @@ export class Billing {
 
   /** Get current subscription. */
   async getSubscription(): Promise<any> {
-    const req = new HookSniffRequest(HttpMethod.GET, "/api/v1/billing/subscription");
+    const req = new HookSniffRequest(HttpMethod.GET, "/v1/billing/subscription");
     return req.send(this.ctx, (j) => j);
   }
 
   /** Cancel subscription. */
   async cancelSubscription(): Promise<void> {
-    const req = new HookSniffRequest(HttpMethod.DELETE, "/api/v1/billing/subscription");
+    const req = new HookSniffRequest(HttpMethod.DELETE, "/v1/billing/subscription");
     return req.sendNoResponseBody(this.ctx);
   }
 
   /** Upgrade plan. */
   async upgrade(body: Record<string, any>): Promise<any> {
-    const req = new HookSniffRequest(HttpMethod.POST, "/api/v1/billing/upgrade");
+    const req = new HookSniffRequest(HttpMethod.POST, "/v1/billing/upgrade");
     req.setBody(body);
     return req.send(this.ctx, (j) => j);
   }
 
   /** Open billing portal. */
   async openPortal(): Promise<any> {
-    const req = new HookSniffRequest(HttpMethod.POST, "/api/v1/billing/portal");
+    const req = new HookSniffRequest(HttpMethod.POST, "/v1/billing/portal");
     return req.send(this.ctx, (j) => j);
   }
 
   /** Get billing usage. */
   async getUsage(): Promise<any> {
-    const req = new HookSniffRequest(HttpMethod.GET, "/api/v1/billing/usage");
+    const req = new HookSniffRequest(HttpMethod.GET, "/v1/billing/usage");
     return req.send(this.ctx, (j) => j);
   }
 
   /** Get invoices. */
   async getInvoices(): Promise<any> {
-    const req = new HookSniffRequest(HttpMethod.GET, "/api/v1/billing/invoices");
+    const req = new HookSniffRequest(HttpMethod.GET, "/v1/billing/invoices");
     return req.send(this.ctx, (j) => j);
   }
 }

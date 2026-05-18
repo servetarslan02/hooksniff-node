@@ -56,33 +56,33 @@ export class ConnectorApi {
 
   /** List available connectors. */
   public list(): Promise<Connector[]> {
-    const req = new HookSniffRequest(HttpMethod.GET, "/api/v1/connectors");
+    const req = new HookSniffRequest(HttpMethod.GET, "/v1/connectors");
     return req.send(this.requestCtx, (arr: any[]) => arr.map(ConnectorFromJson));
   }
 
   /** Get connector details. */
   public get(id: string): Promise<Connector> {
-    const req = new HookSniffRequest(HttpMethod.GET, "/api/v1/connectors/{id}");
+    const req = new HookSniffRequest(HttpMethod.GET, "/v1/connectors/{id}");
     req.setPathParam("id", id);
     return req.send(this.requestCtx, ConnectorFromJson);
   }
 
   /** List customer's connector configs. */
   public listConfigs(): Promise<ConnectorConfig[]> {
-    const req = new HookSniffRequest(HttpMethod.GET, "/api/v1/connectors/configs");
+    const req = new HookSniffRequest(HttpMethod.GET, "/v1/connectors/configs");
     return req.send(this.requestCtx, (arr: any[]) => arr.map(ConnectorConfigFromJson));
   }
 
   /** Create connector config. */
   public createConfig(body: ConnectorConfigIn): Promise<ConnectorConfig> {
-    const req = new HookSniffRequest(HttpMethod.POST, "/api/v1/connectors/configs");
+    const req = new HookSniffRequest(HttpMethod.POST, "/v1/connectors/configs");
     req.setBody({ connector_id: body.connectorId, name: body.name, config: body.config, credentials: body.credentials, is_active: body.isActive });
     return req.send(this.requestCtx, ConnectorConfigFromJson);
   }
 
   /** Update connector config. */
   public updateConfig(id: string, body: Partial<ConnectorConfigIn>): Promise<ConnectorConfig> {
-    const req = new HookSniffRequest(HttpMethod.PUT, "/api/v1/connectors/configs/{id}");
+    const req = new HookSniffRequest(HttpMethod.PUT, "/v1/connectors/configs/{id}");
     req.setPathParam("id", id);
     req.setBody({ name: body.name, config: body.config, credentials: body.credentials, is_active: body.isActive });
     return req.send(this.requestCtx, ConnectorConfigFromJson);
@@ -90,7 +90,7 @@ export class ConnectorApi {
 
   /** Delete connector config. */
   public deleteConfig(id: string): Promise<void> {
-    const req = new HookSniffRequest(HttpMethod.DELETE, "/api/v1/connectors/configs/{id}");
+    const req = new HookSniffRequest(HttpMethod.DELETE, "/v1/connectors/configs/{id}");
     req.setPathParam("id", id);
     return req.sendNoResponseBody(this.requestCtx);
   }

@@ -93,7 +93,7 @@ export class EventType {
    * @returns A paginated list of event types
    */
   public list(options?: EventTypeListOptions): Promise<ListResponseEventTypeOut> {
-    const request = new HookSniffRequest(HttpMethod.GET, "/api/v1/event-type");
+    const request = new HookSniffRequest(HttpMethod.GET, "/v1/event-type");
 
     request.setQueryParams({
       limit: options?.limit,
@@ -122,7 +122,7 @@ export class EventType {
     eventTypeIn: EventTypeIn,
     options?: EventTypeCreateOptions
   ): Promise<EventTypeOut> {
-    const request = new HookSniffRequest(HttpMethod.POST, "/api/v1/event-type");
+    const request = new HookSniffRequest(HttpMethod.POST, "/v1/event-type");
 
     request.setHeaderParam("idempotency-key", options?.idempotencyKey);
     request.setBody(EventTypeInSerializer._toJsonObject(eventTypeIn));
@@ -146,7 +146,7 @@ export class EventType {
   ): Promise<EventTypeImportOpenApiOut> {
     const request = new HookSniffRequest(
       HttpMethod.POST,
-      "/api/v1/event-type/import/openapi"
+      "/v1/event-type/import/openapi"
     );
 
     request.setHeaderParam("idempotency-key", options?.idempotencyKey);
@@ -167,7 +167,7 @@ export class EventType {
   public get(eventTypeName: string): Promise<EventTypeOut> {
     const request = new HookSniffRequest(
       HttpMethod.GET,
-      "/api/v1/event-type/{event_type_name}"
+      "/v1/event-type/{event_type_name}"
     );
 
     request.setPathParam("event_type_name", eventTypeName);
@@ -188,7 +188,7 @@ export class EventType {
   ): Promise<EventTypeOut> {
     const request = new HookSniffRequest(
       HttpMethod.PUT,
-      "/api/v1/event-type/{event_type_name}"
+      "/v1/event-type/{event_type_name}"
     );
 
     request.setPathParam("event_type_name", eventTypeName);
@@ -212,7 +212,7 @@ export class EventType {
   ): Promise<void> {
     const request = new HookSniffRequest(
       HttpMethod.DELETE,
-      "/api/v1/event-type/{event_type_name}"
+      "/v1/event-type/{event_type_name}"
     );
 
     request.setPathParam("event_type_name", eventTypeName);
@@ -236,7 +236,7 @@ export class EventType {
   ): Promise<EventTypeOut> {
     const request = new HookSniffRequest(
       HttpMethod.PATCH,
-      "/api/v1/event-type/{event_type_name}"
+      "/v1/event-type/{event_type_name}"
     );
 
     request.setPathParam("event_type_name", eventTypeName);

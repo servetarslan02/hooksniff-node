@@ -45,20 +45,20 @@ export class Inbound {
 
   /** List all inbound webhook configurations. */
   public listConfigs(): Promise<InboundConfig[]> {
-    const request = new HookSniffRequest(HttpMethod.GET, "/api/v1/inbound/configs");
+    const request = new HookSniffRequest(HttpMethod.GET, "/v1/inbound/configs");
     return request.send(this.requestCtx, (arr: any[]) => arr.map(InboundConfigFromJson));
   }
 
   /** Create a new inbound webhook configuration. */
   public createConfig(body: InboundConfigIn): Promise<InboundConfig> {
-    const request = new HookSniffRequest(HttpMethod.POST, "/api/v1/inbound/configs");
+    const request = new HookSniffRequest(HttpMethod.POST, "/v1/inbound/configs");
     request.setBody(InboundConfigToJson(body));
     return request.send(this.requestCtx, InboundConfigFromJson);
   }
 
   /** Update an inbound webhook configuration. */
   public updateConfig(id: string, body: Partial<InboundConfigIn>): Promise<InboundConfig> {
-    const request = new HookSniffRequest(HttpMethod.PUT, "/api/v1/inbound/configs/{id}");
+    const request = new HookSniffRequest(HttpMethod.PUT, "/v1/inbound/configs/{id}");
     request.setPathParam("id", id);
     request.setBody(InboundConfigToJson(body as InboundConfigIn));
     return request.send(this.requestCtx, InboundConfigFromJson);
@@ -66,7 +66,7 @@ export class Inbound {
 
   /** Delete an inbound webhook configuration. */
   public deleteConfig(id: string): Promise<void> {
-    const request = new HookSniffRequest(HttpMethod.DELETE, "/api/v1/inbound/configs/{id}");
+    const request = new HookSniffRequest(HttpMethod.DELETE, "/v1/inbound/configs/{id}");
     request.setPathParam("id", id);
     return request.sendNoResponseBody(this.requestCtx);
   }

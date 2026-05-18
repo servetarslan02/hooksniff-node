@@ -23,7 +23,7 @@ export class Authentication {
    * After calling this, all subsequent API calls will fail with 401.
    */
   public logout(): Promise<void> {
-    const request = new HookSniffRequest(HttpMethod.POST, "/api/v1/auth/logout");
+    const request = new HookSniffRequest(HttpMethod.POST, "/v1/auth/logout");
     return request.sendNoResponseBody(this.requestCtx);
   }
 }

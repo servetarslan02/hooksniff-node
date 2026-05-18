@@ -19,39 +19,39 @@ export class OperationalWebhook {
   public constructor(private readonly requestCtx: HookSniffRequestContext) {}
 
   public list(): Promise<OperationalWebhookEndpointOut[]> {
-    const request = new HookSniffRequest(HttpMethod.GET, "/api/v1/operational-webhooks");
+    const request = new HookSniffRequest(HttpMethod.GET, "/v1/operational-webhooks");
     return request.send(this.requestCtx, (arr: any[]) =>
       arr.map(OperationalWebhookEndpointOutSerializer._fromJsonObject)
     );
   }
 
   public create(body: OperationalWebhookEndpointIn): Promise<OperationalWebhookEndpointOut> {
-    const request = new HookSniffRequest(HttpMethod.POST, "/api/v1/operational-webhooks");
+    const request = new HookSniffRequest(HttpMethod.POST, "/v1/operational-webhooks");
     request.setBody(OperationalWebhookEndpointInSerializer._toJsonObject(body));
     return request.send(this.requestCtx, OperationalWebhookEndpointOutSerializer._fromJsonObject);
   }
 
   public get(endpointId: string): Promise<OperationalWebhookEndpointOut> {
-    const request = new HookSniffRequest(HttpMethod.GET, "/api/v1/operational-webhooks/{id}");
+    const request = new HookSniffRequest(HttpMethod.GET, "/v1/operational-webhooks/{id}");
     request.setPathParam("id", endpointId);
     return request.send(this.requestCtx, OperationalWebhookEndpointOutSerializer._fromJsonObject);
   }
 
   public update(endpointId: string, body: Partial<OperationalWebhookEndpointIn>): Promise<OperationalWebhookEndpointOut> {
-    const request = new HookSniffRequest(HttpMethod.PUT, "/api/v1/operational-webhooks/{id}");
+    const request = new HookSniffRequest(HttpMethod.PUT, "/v1/operational-webhooks/{id}");
     request.setPathParam("id", endpointId);
     request.setBody(OperationalWebhookEndpointInSerializer._toJsonObject(body as OperationalWebhookEndpointIn));
     return request.send(this.requestCtx, OperationalWebhookEndpointOutSerializer._fromJsonObject);
   }
 
   public delete(endpointId: string): Promise<void> {
-    const request = new HookSniffRequest(HttpMethod.DELETE, "/api/v1/operational-webhooks/{id}");
+    const request = new HookSniffRequest(HttpMethod.DELETE, "/v1/operational-webhooks/{id}");
     request.setPathParam("id", endpointId);
     return request.sendNoResponseBody(this.requestCtx);
   }
 
   public listDeliveries(endpointId: string): Promise<OperationalWebhookDeliveryOut[]> {
-    const request = new HookSniffRequest(HttpMethod.GET, "/api/v1/operational-webhooks/{id}/deliveries");
+    const request = new HookSniffRequest(HttpMethod.GET, "/v1/operational-webhooks/{id}/deliveries");
     request.setPathParam("id", endpointId);
     return request.send(this.requestCtx, (arr: any[]) =>
       arr.map(OperationalWebhookDeliveryOutSerializer._fromJsonObject)

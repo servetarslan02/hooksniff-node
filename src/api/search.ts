@@ -6,7 +6,7 @@ export class Search {
 
   /** Search deliveries. */
   async search(params: Record<string, string>): Promise<any> {
-    const req = new HookSniffRequest(HttpMethod.GET, "/api/v1/search");
+    const req = new HookSniffRequest(HttpMethod.GET, "/v1/search");
     req.setQueryParams(params);
     return req.send(this.ctx, (j) => j);
   }

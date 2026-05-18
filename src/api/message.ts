@@ -87,7 +87,7 @@ export class Message {
    * ```
    */
   public list(options?: MessageListOptions): Promise<ListResponseMessageOut> {
-    const request = new HookSniffRequest(HttpMethod.GET, "/api/v1/msg");
+    const request = new HookSniffRequest(HttpMethod.GET, "/v1/msg");
 
     request.setQueryParams({
       limit: options?.limit,
@@ -144,7 +144,7 @@ export class Message {
     messageIn: MessageIn,
     options?: MessageCreateOptions
   ): Promise<MessageOut> {
-    const request = new HookSniffRequest(HttpMethod.POST, "/api/v1/msg");
+    const request = new HookSniffRequest(HttpMethod.POST, "/v1/msg");
 
     request.setQueryParams({
       with_content: options?.withContent,
@@ -169,7 +169,7 @@ export class Message {
    * ```
    */
   public get(msgId: string, options?: MessageGetOptions): Promise<MessageOut> {
-    const request = new HookSniffRequest(HttpMethod.GET, "/api/v1/msg/{msg_id}");
+    const request = new HookSniffRequest(HttpMethod.GET, "/v1/msg/{msg_id}");
 
     request.setPathParam("msg_id", msgId);
     request.setQueryParams({

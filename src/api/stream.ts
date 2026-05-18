@@ -103,20 +103,20 @@ export class StreamApi {
 
   /** List all stream channels. */
   public listChannels(): Promise<StreamChannel[]> {
-    const req = new HookSniffRequest(HttpMethod.GET, "/api/v1/stream/channels");
+    const req = new HookSniffRequest(HttpMethod.GET, "/v1/stream/channels");
     return req.send(this.requestCtx, (arr: any[]) => arr.map(ChannelFromJson));
   }
 
   /** Get channel details with recent messages. */
   public getChannel(id: string): Promise<StreamChannelDetail> {
-    const req = new HookSniffRequest(HttpMethod.GET, "/api/v1/stream/channels/{id}");
+    const req = new HookSniffRequest(HttpMethod.GET, "/v1/stream/channels/{id}");
     req.setPathParam("id", id);
     return req.send(this.requestCtx, ChannelDetailFromJson);
   }
 
   /** Create a stream channel. */
   public createChannel(body: StreamChannelIn): Promise<StreamChannel> {
-    const req = new HookSniffRequest(HttpMethod.POST, "/api/v1/stream/channels");
+    const req = new HookSniffRequest(HttpMethod.POST, "/v1/stream/channels");
     req.setBody({
       name: body.name, description: body.description, channel_type: body.channelType,
       event_filter: body.eventFilter, max_subscribers: body.maxSubscribers, enabled: body.enabled,
@@ -126,7 +126,7 @@ export class StreamApi {
 
   /** Update a channel. */
   public updateChannel(id: string, body: StreamChannelUpdate): Promise<StreamChannel> {
-    const req = new HookSniffRequest(HttpMethod.PUT, "/api/v1/stream/channels/{id}");
+    const req = new HookSniffRequest(HttpMethod.PUT, "/v1/stream/channels/{id}");
     req.setPathParam("id", id);
     const payload: any = {};
     if (body.name !== undefined) payload.name = body.name;
@@ -140,14 +140,14 @@ export class StreamApi {
 
   /** Delete a channel. */
   public deleteChannel(id: string): Promise<void> {
-    const req = new HookSniffRequest(HttpMethod.DELETE, "/api/v1/stream/channels/{id}");
+    const req = new HookSniffRequest(HttpMethod.DELETE, "/v1/stream/channels/{id}");
     req.setPathParam("id", id);
     return req.sendNoResponseBody(this.requestCtx);
   }
 
   /** List recent messages for a channel. */
   public listMessages(id: string, options?: MessageListOptions): Promise<StreamMessage[]> {
-    const req = new HookSniffRequest(HttpMethod.GET, "/api/v1/stream/channels/{id}/messages");
+    const req = new HookSniffRequest(HttpMethod.GET, "/v1/stream/channels/{id}/messages");
     req.setPathParam("id", id);
     if (options?.eventType) req.setQueryParam("event_type", options.eventType);
     if (options?.limit) req.setQueryParam("limit", options.limit);
@@ -156,20 +156,20 @@ export class StreamApi {
 
   /** List active subscriptions. */
   public listSubscriptions(): Promise<StreamSubscription[]> {
-    const req = new HookSniffRequest(HttpMethod.GET, "/api/v1/stream/subscriptions");
+    const req = new HookSniffRequest(HttpMethod.GET, "/v1/stream/subscriptions");
     return req.send(this.requestCtx, (arr: any[]) => arr.map(SubscriptionFromJson));
   }
 
   /** Disconnect a subscription. */
   public disconnectSubscription(id: string): Promise<void> {
-    const req = new HookSniffRequest(HttpMethod.DELETE, "/api/v1/stream/subscriptions/{id}");
+    const req = new HookSniffRequest(HttpMethod.DELETE, "/v1/stream/subscriptions/{id}");
     req.setPathParam("id", id);
     return req.sendNoResponseBody(this.requestCtx);
   }
 
   /** Publish an event to a channel. */
   public publish(body: PublishEventIn): Promise<{ success: boolean; messageId: string; deliveredTo: number }> {
-    const req = new HookSniffRequest(HttpMethod.POST, "/api/v1/stream/publish");
+    const req = new HookSniffRequest(HttpMethod.POST, "/v1/stream/publish");
     req.setBody({ channel_id: body.channelId, event_type: body.eventType, payload: body.payload });
     return req.send(this.requestCtx, (json: any) => ({
       success: json['success'], messageId: json['message_id'], deliveredTo: json['delivered_to'],

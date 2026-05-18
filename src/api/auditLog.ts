@@ -6,14 +6,14 @@ export class AuditLog {
 
   /** List audit log entries. */
   async list(params?: Record<string, string>): Promise<any> {
-    const req = new HookSniffRequest(HttpMethod.GET, "/api/v1/audit-log");
+    const req = new HookSniffRequest(HttpMethod.GET, "/v1/audit-log");
     if (params) req.setQueryParams(params);
     return req.send(this.ctx, (j) => j);
   }
 
   /** Get an audit entry. */
   async get(id: string): Promise<any> {
-    const req = new HookSniffRequest(HttpMethod.GET, `/api/v1/audit-log/${id}`);
+    const req = new HookSniffRequest(HttpMethod.GET, `/v1/audit-log/${id}`);
     return req.send(this.ctx, (j) => j);
   }
 }
