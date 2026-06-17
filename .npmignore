@@ -1,0 +1,11 @@
+src/
+__tests__/
+*.test.ts
+*.test.mjs
+test-live.mjs
+debug-test.mjs
+node_modules/
+.github/
+.vscode/
+*.log
+.DS_Store

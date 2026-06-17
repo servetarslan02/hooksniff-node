@@ -1,0 +1,47 @@
+{
+  "name": "hooksniff-sdk",
+  "version": "0.4.2",
+  "description": "Official HookSniff SDK for Node.js - Webhook infrastructure for developers",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "biome check src/",
+    "format": "biome format --write src/",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "hooksniff",
+    "webhooks",
+    "webhook",
+    "api",
+    "sdk"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/servetarslan02/hooksniff-node"
+  },
+  "homepage": "https://hooksniff.vercel.app",
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.3",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  }
+}
