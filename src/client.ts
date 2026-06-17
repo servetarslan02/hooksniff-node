@@ -13,6 +13,8 @@ import { SsoResource, CustomDomainResource, EnvironmentResource } from "./resour
 import { CortexResource } from "./resources/cortex";
 import { TemplateResource, SchemaResource, AlertResource } from "./resources/templates";
 import { RoutingResource, RateLimitResource, AuditResource } from "./resources/routing";
+import { ConnectorResource } from "./resources/connector";
+import { StreamResource } from "./resources/stream";
 import type { ClientConfig, User } from "./types";
 
 /**
@@ -112,6 +114,12 @@ export class HookSniff {
   /** Audit log */
   public readonly audit: AuditResource;
 
+  /** Connectors */
+  public readonly connector: ConnectorResource;
+
+  /** Streaming (SSE) */
+  public readonly stream: StreamResource;
+
   constructor(apiKey: string, config?: ClientConfig) {
     this.http = new HttpClient(apiKey, config);
     this.application = new ApplicationResource(this.http);
@@ -135,6 +143,8 @@ export class HookSniff {
     this.routing = new RoutingResource(this.http);
     this.rateLimit = new RateLimitResource(this.http);
     this.audit = new AuditResource(this.http);
+    this.connector = new ConnectorResource(this.http);
+    this.stream = new StreamResource(this.http);
   }
 
   /**
