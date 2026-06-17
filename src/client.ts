@@ -15,6 +15,7 @@ import { TemplateResource, SchemaResource, AlertResource } from "./resources/tem
 import { RateLimitResource, AuditResource } from "./resources/routing";
 import { ConnectorResource } from "./resources/connector";
 import { StreamResource } from "./resources/stream";
+import { BackgroundTaskResource, IntegrationResource, TransformResource, ServiceTokenResource, OperationalWebhookResource } from "./resources/advanced";
 import type { ClientConfig, User } from "./types";
 
 /**
