@@ -14,7 +14,6 @@ import { CortexResource } from "./resources/cortex";
 import { TemplateResource, SchemaResource, AlertResource } from "./resources/templates";
 import { RateLimitResource, AuditResource } from "./resources/routing";
 import { ConnectorResource } from "./resources/connector";
-import { BackgroundTaskResource, IntegrationResource, TransformResource, PortalResource, ServiceTokenResource, OperationalWebhookResource } from "./resources/advanced";
 import { StreamResource } from "./resources/stream";
 import type { ClientConfig, User } from "./types";
 
@@ -132,7 +131,6 @@ export class HookSniff {
   public readonly transform: TransformResource;
 
   /** Customer portal */
-  public readonly portal: PortalResource;
 
   /** Service tokens */
   public readonly serviceToken: ServiceTokenResource;
@@ -169,7 +167,6 @@ export class HookSniff {
     this.backgroundTask = new BackgroundTaskResource(this.http);
     this.integration = new IntegrationResource(this.http);
     this.transform = new TransformResource(this.http);
-    this.portal = new PortalResource(this.http);
     this.serviceToken = new ServiceTokenResource(this.http);
     this.operationalWebhook = new OperationalWebhookResource(this.http);
   }
