@@ -12,6 +12,7 @@ import { NotificationResource, BroadcastResource } from "./resources/notificatio
 import { SsoResource, CustomDomainResource, EnvironmentResource } from "./resources/platform";
 import { CortexResource } from "./resources/cortex";
 import { TemplateResource, SchemaResource, AlertResource } from "./resources/templates";
+import { RateLimitResource, AuditResource } from "./resources/routing";
 import { ConnectorResource } from "./resources/connector";
 import { StreamResource } from "./resources/stream";
 import type { ClientConfig, User } from "./types";
