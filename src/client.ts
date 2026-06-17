@@ -14,6 +14,7 @@ import { CortexResource } from "./resources/cortex";
 import { TemplateResource, SchemaResource, AlertResource } from "./resources/templates";
 import { RateLimitResource, AuditResource } from "./resources/routing";
 import { ConnectorResource } from "./resources/connector";
+import { BackgroundTaskResource, IntegrationResource, TransformResource, PortalResource, ServiceTokenResource, OperationalWebhookResource } from "./resources/advanced";
 import { StreamResource } from "./resources/stream";
 import type { ClientConfig, User } from "./types";
 
