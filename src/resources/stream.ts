@@ -27,11 +27,11 @@ export class StreamResource {
   constructor(private readonly http: HttpClient) {}
 
   async listChannels(): Promise<StreamChannel[]> {
-    return this.http.request<StreamChannel[]>("GET", "/stream/channels");
+    return this.http.request<StreamChannel[]>("GET", "/v1/stream/channels");
   }
 
   async createChannel(params: { name: string; description?: string }): Promise<StreamChannel> {
-    return this.http.request<StreamChannel>("POST", "/stream/channels", params);
+    return this.http.request<StreamChannel>("POST", "/v1/stream/channels", params);
   }
 
   async getChannel(channelId: string): Promise<StreamChannel> {
@@ -47,11 +47,11 @@ export class StreamResource {
   }
 
   async publish(params: { channel_id: string; event: string; data: Record<string, unknown> }): Promise<StreamMessage> {
-    return this.http.request<StreamMessage>("POST", "/stream/publish", params);
+    return this.http.request<StreamMessage>("POST", "/v1/stream/publish", params);
   }
 
   async listSubscriptions(): Promise<StreamSubscription[]> {
-    return this.http.request<StreamSubscription[]>("GET", "/stream/subscriptions");
+    return this.http.request<StreamSubscription[]>("GET", "/v1/stream/subscriptions");
   }
 
   async getSubscription(subscriptionId: string): Promise<StreamSubscription> {
@@ -67,7 +67,7 @@ export class StreamResource {
    * Use with EventSource or similar SSE client.
    */
   getDeliveryStreamUrl(): string {
-    return "/stream/deliveries";
+    return "/v1/stream/deliveries";
   }
 
   /**

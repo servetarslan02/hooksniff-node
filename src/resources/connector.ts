@@ -20,7 +20,7 @@ export class ConnectorResource {
   constructor(private readonly http: HttpClient) {}
 
   async list(): Promise<Connector[]> {
-    return this.http.request<Connector[]>("GET", "/connectors");
+    return this.http.request<Connector[]>("GET", "/v1/connectors");
   }
 
   async get(connectorId: string): Promise<Connector> {
@@ -28,11 +28,11 @@ export class ConnectorResource {
   }
 
   async listConfigs(): Promise<ConnectorConfig[]> {
-    return this.http.request<ConnectorConfig[]>("GET", "/connectors/configs");
+    return this.http.request<ConnectorConfig[]>("GET", "/v1/connectors/configs");
   }
 
   async createConfig(params: { connector_id: string; name: string; config: Record<string, unknown> }): Promise<ConnectorConfig> {
-    return this.http.request<ConnectorConfig>("POST", "/connectors/configs", params);
+    return this.http.request<ConnectorConfig>("POST", "/v1/connectors/configs", params);
   }
 
   async getConfig(configId: string): Promise<ConnectorConfig> {
