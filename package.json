@@ -1,5 +1,5 @@
 {
-  "name": "hooksniff-sdk",
+  "name": "hooksniff-node",
   "version": "0.4.8",
   "description": "Official HookSniff SDK for Node.js - Webhook infrastructure for developers",
   "main": "dist/index.js",

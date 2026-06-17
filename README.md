@@ -2,19 +2,19 @@
 
 Official Node.js SDK for [HookSniff](https://hooksniff.vercel.app) — the webhook infrastructure for developers.
 
-[![npm version](https://img.shields.io/npm/v/hooksniff-sdk.svg)](https://www.npmjs.com/package/hooksniff-sdk)
+[![npm version](https://img.shields.io/npm/v/hooksniff-node.svg)](https://www.npmjs.com/package/hooksniff-node)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ## Installation
 
 ```bash
-npm install hooksniff-sdk
+npm install hooksniff-node
 ```
 
 ## Quick Start
 
 ```typescript
-import { HookSniff } from "hooksniff-sdk";
+import { HookSniff } from "hooksniff-node";
 
 const hs = new HookSniff("hr_live_...");
 
@@ -55,7 +55,7 @@ console.log(delivery.id); // "msg_..."
 ### Authentication
 
 ```typescript
-import { HookSniff } from "hooksniff-sdk";
+import { HookSniff } from "hooksniff-node";
 
 const hs = new HookSniff("hr_live_...");
 
@@ -171,7 +171,7 @@ const delivery = await hs.webhook.replay("msg_123");
 Verify incoming webhooks from HookSniff:
 
 ```typescript
-import { Webhook, WebhookVerificationError } from "hooksniff-sdk";
+import { Webhook, WebhookVerificationError } from "hooksniff-node";
 
 const wh = new Webhook("whsec_...");
 
@@ -373,7 +373,7 @@ import {
   RateLimitError,
   ValidationError,
   ServerError,
-} from "hooksniff-sdk";
+} from "hooksniff-node";
 
 try {
   await hs.endpoint.get("invalid_id");
