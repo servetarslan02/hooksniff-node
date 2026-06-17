@@ -119,6 +119,28 @@ export class HookSniff {
   /** Streaming (SSE) */
   public readonly stream: StreamResource;
 
+  /** Background tasks */
+  public readonly backgroundTask: BackgroundTaskResource;
+
+  /** Integrations */
+  public readonly integration: IntegrationResource;
+
+  /** Inbound webhooks */
+
+  /** Payload transforms */
+  public readonly transform: TransformResource;
+
+  /** Customer portal */
+  public readonly portal: PortalResource;
+
+  /** Service tokens */
+  public readonly serviceToken: ServiceTokenResource;
+
+  /** Operational webhooks */
+  public readonly operationalWebhook: OperationalWebhookResource;
+
+  /** Message poller */
+
   constructor(apiKey: string, config?: ClientConfig) {
     this.http = new HttpClient(apiKey, config);
     this.application = new ApplicationResource(this.http);
@@ -143,6 +165,12 @@ export class HookSniff {
     this.audit = new AuditResource(this.http);
     this.connector = new ConnectorResource(this.http);
     this.stream = new StreamResource(this.http);
+    this.backgroundTask = new BackgroundTaskResource(this.http);
+    this.integration = new IntegrationResource(this.http);
+    this.transform = new TransformResource(this.http);
+    this.portal = new PortalResource(this.http);
+    this.serviceToken = new ServiceTokenResource(this.http);
+    this.operationalWebhook = new OperationalWebhookResource(this.http);
   }
 
   /**
