@@ -12,7 +12,6 @@ import { NotificationResource, BroadcastResource } from "./resources/notificatio
 import { SsoResource, CustomDomainResource, EnvironmentResource } from "./resources/platform";
 import { CortexResource } from "./resources/cortex";
 import { TemplateResource, SchemaResource, AlertResource } from "./resources/templates";
-import { RoutingResource, RateLimitResource, AuditResource } from "./resources/routing";
 import { ConnectorResource } from "./resources/connector";
 import { StreamResource } from "./resources/stream";
 import type { ClientConfig, User } from "./types";
@@ -106,7 +105,6 @@ export class HookSniff {
   public readonly alert: AlertResource;
 
   /** Routing rules */
-  public readonly routing: RoutingResource;
 
   /** Rate limits */
   public readonly rateLimit: RateLimitResource;
@@ -140,7 +138,6 @@ export class HookSniff {
     this.template = new TemplateResource(this.http);
     this.schema = new SchemaResource(this.http);
     this.alert = new AlertResource(this.http);
-    this.routing = new RoutingResource(this.http);
     this.rateLimit = new RateLimitResource(this.http);
     this.audit = new AuditResource(this.http);
     this.connector = new ConnectorResource(this.http);

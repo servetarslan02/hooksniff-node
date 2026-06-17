@@ -37,6 +37,5 @@ export type { Notification, Broadcast } from "./resources/notification";
 export type { SsoConfig, CustomDomain, Environment, EnvironmentVariable } from "./resources/platform";
 export type { CortexInsight } from "./resources/cortex";
 export type { Template, Schema, Alert, AlertEvent } from "./resources/templates";
-export type { RoutingRule, RateLimit, AuditEvent } from "./resources/routing";
 export type { Connector, ConnectorConfig } from "./resources/connector";
 export type { StreamChannel, StreamMessage, StreamSubscription } from "./resources/stream";
