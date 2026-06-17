@@ -66,8 +66,8 @@ export class HttpClient {
 
         const errorBody: any = await response.json().catch(() => ({}));
 
-        // Don't retry client errors (4xx) except 429
-        if (response.status >= 400 && response.status < 500 && response.status !== 429) {
+        // Don't retry client errors (4xx) except 429 and 408 (timeout)
+        if (response.status >= 400 && response.status < 500 && response.status !== 429 && response.status !== 408) {
           throw mapError(response.status, errorBody as any);
         }
 
