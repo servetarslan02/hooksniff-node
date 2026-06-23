@@ -35,15 +35,15 @@ export class StreamResource {
   }
 
   async getChannel(channelId: string): Promise<StreamChannel> {
-    return this.http.request<StreamChannel>("GET", `/stream/channels/${channelId}`);
+    return this.http.request<StreamChannel>("GET", `/v1/stream/channels/${channelId}`);
   }
 
   async deleteChannel(channelId: string): Promise<void> {
-    await this.http.request<void>("DELETE", `/stream/channels/${channelId}`);
+    await this.http.request<void>("DELETE", `/v1/stream/channels/${channelId}`);
   }
 
   async listMessages(channelId: string): Promise<StreamMessage[]> {
-    return this.http.request<StreamMessage[]>("GET", `/stream/channels/${channelId}/messages`);
+    return this.http.request<StreamMessage[]>("GET", `/v1/stream/channels/${channelId}/messages`);
   }
 
   async publish(params: { channel_id: string; event: string; data: Record<string, unknown> }): Promise<StreamMessage> {
@@ -55,11 +55,11 @@ export class StreamResource {
   }
 
   async getSubscription(subscriptionId: string): Promise<StreamSubscription> {
-    return this.http.request<StreamSubscription>("GET", `/stream/subscriptions/${subscriptionId}`);
+    return this.http.request<StreamSubscription>("GET", `/v1/stream/subscriptions/${subscriptionId}`);
   }
 
   async disconnectSubscription(subscriptionId: string): Promise<void> {
-    await this.http.request<void>("DELETE", `/stream/subscriptions/${subscriptionId}`);
+    await this.http.request<void>("DELETE", `/v1/stream/subscriptions/${subscriptionId}`);
   }
 
   /**
@@ -75,6 +75,6 @@ export class StreamResource {
    * Use with EventSource or similar SSE client.
    */
   getChannelStreamUrl(channelId: string): string {
-    return `/stream/channels/${channelId}/subscribe`;
+    return `/v1/stream/channels/${channelId}/subscribe`;
   }
 }

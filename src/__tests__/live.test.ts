@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { HookSniff } from "../src/client";
-import { Webhook, WebhookVerificationError } from "../src/webhook";
+import { HookSniff } from "../client";
+import { Webhook, WebhookVerificationError } from "../webhook";
 import {
   AuthenticationError,
   NotFoundError,
   ValidationError,
-} from "../src/errors";
+} from "../errors";
 
 const API_KEY = process.env.HOOKSNIFF_API_KEY;
 const BASE_URL = process.env.HOOKSNIFF_BASE_URL || "https://hooksniff-api-e6ztf3x2ma-ew.a.run.app";

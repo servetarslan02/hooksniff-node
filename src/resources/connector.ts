@@ -24,7 +24,7 @@ export class ConnectorResource {
   }
 
   async get(connectorId: string): Promise<Connector> {
-    return this.http.request<Connector>("GET", `/connectors/${connectorId}`);
+    return this.http.request<Connector>("GET", `/v1/connectors/${connectorId}`);
   }
 
   async listConfigs(): Promise<ConnectorConfig[]> {
@@ -36,14 +36,14 @@ export class ConnectorResource {
   }
 
   async getConfig(configId: string): Promise<ConnectorConfig> {
-    return this.http.request<ConnectorConfig>("GET", `/connectors/configs/${configId}`);
+    return this.http.request<ConnectorConfig>("GET", `/v1/connectors/configs/${configId}`);
   }
 
   async updateConfig(configId: string, params: { name?: string; config?: Record<string, unknown> }): Promise<ConnectorConfig> {
-    return this.http.request<ConnectorConfig>("PUT", `/connectors/configs/${configId}`, params);
+    return this.http.request<ConnectorConfig>("PUT", `/v1/connectors/configs/${configId}`, params);
   }
 
   async deleteConfig(configId: string): Promise<void> {
-    await this.http.request<void>("DELETE", `/connectors/configs/${configId}`);
+    await this.http.request<void>("DELETE", `/v1/connectors/configs/${configId}`);
   }
 }
