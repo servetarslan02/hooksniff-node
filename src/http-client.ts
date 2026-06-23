@@ -4,7 +4,7 @@ import type { ClientConfig } from "./types";
 const DEFAULT_BASE_URL = "https://hooksniff-api-e6ztf3x2ma-ew.a.run.app";
 const DEFAULT_TIMEOUT = 30_000;
 const DEFAULT_RETRIES = 3;
-const SDK_VERSION = "0.4.8";
+const SDK_VERSION = "0.4.9";
 
 export class HttpClient {
   private readonly apiKey: string;
